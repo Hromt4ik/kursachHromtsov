@@ -8,6 +8,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 
+from django.http import JsonResponse
 from . import models
 from .forms import CustomUserCreationForm
 # Create your views here.
@@ -27,4 +28,16 @@ class SignUp(CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'signup.html'
-# Create your views here.
+
+def package_detail(request):
+    package_id = request.GET.get('id')
+
+    if package_id:
+        try:
+            package = get_object_or_404(Package, pk=package_id)
+            # Формируйте ответ в JSON-формате
+            return JsonResponse({'message': 'Информация о посылке: ...'})  # Здесь должны быть детали посылки
+        except ValueError:
+            return JsonResponse({'message': 'Неверный формат ID'})
+
+    return JsonResponse({'message': 'Введите ID посылки'})

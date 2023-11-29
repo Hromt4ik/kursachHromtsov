@@ -9,9 +9,19 @@
       <img class="loader" src="{% static "image/loader.png" %}" alt="грузчик">
       <div class="serv">
           <h3>Отследить Посылку</h3>
+<<<<<<< HEAD
+          <div class="serv-1">
+            <label>Номер посылки:</label>
+            <input class="check" type="text">
+            <button class="check-bottom" type="submit">Отследить</button>
+          </div>
+          <div class="results"></div>
+          <img class="boxquestion" src="{% static "image/boxquestion.png" %}" alt="кубик">
+=======
           <label>Введите номер посылки:</label>
           <input class="check">
           <button class="check-bottom" type="submit">Отследить</button>
+>>>>>>> origin/main
       </div>
       <div class="serv">
           <h3>Расчитать стоимость</h3>
@@ -21,4 +31,19 @@
       </div>
   </div>
 </main>
+<script>
+document.querySelector('.check-bottom').addEventListener('click', function(e) {
+    e.preventDefault();
+    var packageId = document.querySelector('.check').value;
+    fetch(/path-to-your-view/?id=${packageId})
+        .then(response => response.json())
+        .then(data => {
+             let content =
+        <p>Вес: ${data.weight}</p>
+    ;
+            document.querySelector('.results').innerHTML = data.message;
+        })
+        .catch(error => console.log(error));
+});
+</script>
 {% endblock %}

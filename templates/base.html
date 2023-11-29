@@ -21,7 +21,13 @@
             </ul>
             <div class="signin">
                 {% if user.is_authenticated %}
-                    <a href="{% url 'logout' %}" style="color: #FFFFFF">Выход</a>
+                    <a href="#" style="color: #FFFFFF">
+                        <div class="user-header">
+                            <img src="{% static "image/user2.png" %}" alt="лого" height="70" width="70">
+                            <p class="user-header-p">{{user.username}}</p>
+                        </div>
+                    </a>
+                    <a href="{% url 'logout' %}" style="margin-left: 20px; color: #FFFFFF">Выход</a>
                 {% else %}
                     <a href="{%url 'login'%}" style="color: #FFFFFF">Войти</a>
                     <a href="{%url 'signup'%}" style="margin-left: 20px;color: #FFFFFF">Зарегистрироваться</a>

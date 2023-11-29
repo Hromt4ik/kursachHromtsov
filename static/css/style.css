@@ -275,7 +275,7 @@ legend {
 }
 
 .container{
-    max-width: 1170px;
+    width: 1170px;
     margin-left: auto;
     margin-right: auto;
     padding-left: 16px;
@@ -287,6 +287,10 @@ legend {
 header{
     padding: 10px 0px;
     background-color: #006382;
+}
+
+body{
+     min-width: 1170px;
 }
 
 .header-nav{
@@ -414,8 +418,12 @@ h2{
 
 
 .m-div{
+    max-width: 900px;
+    margin: 0 auto;
+
 max-width: 900px;
 margin: 0 auto;
+
 }
 .contact-ul > li {
     display: flex;
@@ -457,7 +465,107 @@ text-align: center;
     border-radius: 10px;
     padding: 10px;
     font-size: 20px;
-    width: 70%;
+
+    width: 60%;
+    margin-left: 20px;
+}
+
+.check-bottom{
+
+    color: white;
+    background-color: #006382;
+    padding: 10px;
+    border-radius: 10px;
+    margin-left: 10px;
+}
+
+.check-bottom:hover {
+	background: rgba(0,0,0,0);
+	color: #006382;
+	box-shadow: inset 0 0 0 3px #006382;
+}
+
+
+.serv-1{
+
+    display: flex;
+    flex-direction: row;
+    align-item: center;
+    justify-content: center;
+
+}
+
+.serv-1 > label{
+
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.user-header{
+
+    display: flex;
+    align-item: center;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+}
+
+.user-header-p{
+margin-left: 20px;
+    color: white;
+     display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+  a {
+    color:#666;
+    background-image: linear-gradient(to top, #feffff, #006382); /* Параметры градиента */
+    background-repeat: no-repeat; /* Фон не повторяется */
+    background-size: 0 100%; /* Градиент пока не показываем */
+     /* Параметры рамки */
+    border-radius: 4px; /* Радиус скругления углов */
+    text-decoration: none; /* Убираем подчёркивание */
+    padding: 5px 15px; /* Расстояние от */
+    transition: 0.3s; /* Время перехода */
+   }
+   a:hover {
+    background-size: 100% 100%; /* Отображаем градиент */
+   }
+
+.boxquestion{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    text-align: center;
+}
+.boxquestion:hover {
+	animation: bounce 1s;
+}
+
+
+@keyframes bounce {
+	0%, 20%, 60%, 100% {
+		transform: translateY(0);
+		transform: translateY(0);
+	}
+
+	40% {
+		transform: translateY(-20px);
+		transform: translateY(-20px);
+	}
+
+	80% {
+		transform: translateY(-10px);
+		transform: translateY(-10px);
+	}
+
 }
 
 
