@@ -19,6 +19,10 @@ class HomePageView(TemplateView):
 class ContactPageView(TemplateView):
         template_name = 'contact.html'
 
+
+class ServicesPageView(TemplateView):
+    template_name = 'services.html'
+
 class SignUp(CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('login')

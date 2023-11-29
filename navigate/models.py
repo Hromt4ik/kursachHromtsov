@@ -29,8 +29,13 @@ class CargoCategory(models.Model):
     comments = models.CharField(max_length=500, verbose_name='Комментарии', null=True, blank=True)
 
 class Warehouse(models.Model):
-    address = models.CharField(max_length=200, verbose_name='Адрес')
     region = models.CharField(max_length=200, verbose_name='Регион')
+    city = models.CharField(max_length=200, verbose_name='Город')
+    street = models.CharField(max_length=200, verbose_name='Улица')
+    home = models.CharField(max_length=200, verbose_name='Дом')
+    corpus = models.CharField(max_length=200, verbose_name='Корпус')
+
+
 
 class Car(models.Model):
     vin = models.CharField(max_length=17, verbose_name='VIN', unique=True)
@@ -41,7 +46,11 @@ class Car(models.Model):
     driver_id = models.ForeignKey(settings.AUTH_USER_MODEL, limit_choices_to={'post__name': "Сотрудник"}, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Id водителя')
 
 class PointIssue(models.Model):
-    address = models.CharField(max_length=200, verbose_name='Адрес')
+    region = models.CharField(max_length=200, verbose_name='Регион')
+    city = models.CharField(max_length=200, verbose_name='Город')
+    street = models.CharField(max_length=200, verbose_name='Улица')
+    home = models.CharField(max_length=10, verbose_name='Дом')
+    corpus = models.CharField(max_length=10, verbose_name='Корпус')
     warehouse_id = models.ForeignKey('Warehouse', on_delete=models.SET_NULL,null=True, verbose_name='Id склада')
 
 

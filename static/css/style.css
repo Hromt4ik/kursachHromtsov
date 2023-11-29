@@ -413,3 +413,51 @@ h2{
 }
 
 
+.m-div{
+max-width: 900px;
+margin: 0 auto;
+}
+.contact-ul > li {
+    display: flex;
+    flex-direction: row;
+
+}
+
+.contact-ul > li > img{
+    width: 100px;
+    margin: 10px;
+}
+
+.contact-ul-div{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+}
+
+.serv{
+    border-top: 5px solid #006382;
+    min-height: 200px;
+}
+
+.serv > h3{
+margin-top: 25px;
+margin-bottom: 25px;
+text-align: center;
+}
+
+.loader{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 700px;
+}
+
+.check {
+    border: 1px solid #006382;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 20px;
+    width: 70%;
+}
+
+
