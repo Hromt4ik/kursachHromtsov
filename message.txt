@@ -1,0 +1,196 @@
+from django.db import models
+from django.urls import reverse
+from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator, MaxValueValidator, MaxLengthValidator, MinLengthValidator, RegexValidator
+from decimal import Decimal
+from django.utils import timezone
+from django.contrib.auth.models import AbstractUser
+import pytz
+
+class City(models.Model):
+    title = models.CharField(max_length=50, validators=[MinLengthValidator(1), MaxLengthValidator(50)],  verbose_name = "Название")
+
+    def __str__(self):
+        return self.title
+
+
+class Support(models.Model):
+    email_user = models.EmailField(verbose_name="Почта", max_length=50)
+    text = models.TextField(verbose_name="Причина")
+
+    def __str__(self):
+        return self.email_user
+
+    def get_absolute_url(self):
+        return reverse('home')
+
+
+
+class Tour(models.Model):
+    title = models.CharField(max_length=80, verbose_name = "Название")
+    city = models.ForeignKey('city', on_delete=models.CASCADE, verbose_name = "Город")
+    excursion = models.TextField(verbose_name = "Описание")
+    picture_tour = models.FileField(upload_to='img/', verbose_name = "Изображение")
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('tour_detail', args=[str(self.id)])
+
+class Transport(models.Model):
+    title = models.CharField(max_length=20, verbose_name="Название")
+    number = models.CharField(max_length=5, verbose_name="Номер", unique=True)
+    count_seat = models.PositiveIntegerField(verbose_name="Количество мест")
+    def __str__(self):
+        return self.number
+class Event(models.Model):
+    title = models.CharField(max_length=80, verbose_name = "Название")
+    tour = models.ForeignKey('Tour', on_delete=models.CASCADE, verbose_name = "Тур")
+    transport = models.ForeignKey('Transport', on_delete=models.CASCADE, verbose_name = "Транспорт")
+    start_date = models.DateTimeField(verbose_name="Дата начала")
+    end_date = models.DateTimeField(verbose_name="Дата конца")
+    type_of_food = models.CharField(max_length=80, verbose_name="Тип питания")
+    cost = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))],verbose_name="Цена")
+    count_place = models.IntegerField(verbose_name="Количество мест")
+    status = models.CharField(max_length=20, verbose_name = "Статус", default='В наличии', null=True)
+    picture_event = models.FileField(upload_to='img/', verbose_name = "Изображение")
+
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('tour_detail', args=[str(self.Tour.id)])
+
+    def update_status_and_seats(self, reservation):
+        # Проверка количества бронирований и обновление статуса мероприятия
+        bookings_count = Reservation.objects.filter(
+            transportation=self,
+            status='Подтверждено'
+        ).count()
+
+        if bookings_count >= self.count_place:
+            self.status = 'Мест нет'
+        else:
+            self.status = 'В наличии'
+
+        # Обновление статуса, если мероприятие уже прошло
+        if self.end_date < timezone.now():
+            self.status = 'Прошло'
+
+        self.save()
+
+class Role(models.Model):
+    title = models.CharField(max_length=20, verbose_name="Название", unique=True)
+
+    def __str__(self):
+        return self.title
+
+class Position(models.Model):
+    title = models.CharField(max_length=30, verbose_name="Название", unique=True)
+    salary = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))],verbose_name="Зарплата")
+
+    def __str__(self):
+        return self.title
+
+
+class User(models.Model):
+    name = models.CharField(max_length=20, verbose_name='Имя')
+    surname = models.CharField(max_length=20, verbose_name='Фамилия')
+    patronymic = models.CharField(max_length=30, verbose_name='Отчество', blank=True,null=True)
+    phone_number = models.CharField(max_length=11, verbose_name='Номер телефона', unique=True)
+    email = models.EmailField(max_length=50, verbose_name='Электронная почта', unique=True)
+    passport = models.CharField(max_length=10, verbose_name='Паспорт', unique=True)
+    date_of_birth = models.DateField(verbose_name='Дата рождения')
+    role = models.ForeignKey('Role', on_delete=models.SET_NULL, null=True, verbose_name='Роль')
+    login = models.CharField(max_length=25, verbose_name='Логин', unique=True)
+    password = models.CharField(max_length=30, verbose_name='Пароль')
+    status = models.CharField(max_length=20, verbose_name='Статус', blank=True, null=True)
+    position = models.ForeignKey('Position', on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Должность')
+    # REQUIRED_FIELDS = ['name', 'surname']
+    # USERNAME_FIELD = 'email'
+
+    def clean(self):
+
+        if self.position and not self.status:
+            raise ValidationError('Статус должен быть установлен, когда задана должность.')
+        if not self.position and self.status:
+            raise ValidationError('Статус должен быть не установлен, если не задана должность.')
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super(User, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.surname} {self.name}"
+
+class Hotel(models.Model):
+    phone_regex = RegexValidator(
+        regex=r'^\d{11}$',
+        message="Номер телефона введен неверно, должно быть 11 цифр"
+    )
+    title = models.CharField(max_length=20, verbose_name='Название')
+    hotel_class = models.IntegerField(validators=[
+            MinValueValidator(1),
+            MaxValueValidator(5)
+        ], verbose_name='Класс отеля')
+    city = models.ForeignKey('City', on_delete=models.CASCADE,verbose_name='Город')
+    address = models.CharField(max_length=50, verbose_name='Адрес')
+    phone_number = models.CharField(
+        max_length=11,
+        validators=[phone_regex],
+        verbose_name='Номер телефона',
+        unique=True
+    )
+
+    def __str__(self):
+        return self.title
+
+class Comment(models.Model):
+    user = models.ForeignKey('User', on_delete=models.CASCADE, verbose_name='Пользователь')
+    text = models.CharField(max_length=300, verbose_name='Текст комментария')
+    tour = models.ForeignKey('Tour', on_delete=models.CASCADE, verbose_name='Тур')
+
+    def __str__(self):
+        return f"Комментарий от {self.User} на тур {self.Tour}"
+
+class Reservation(models.Model):
+    full_cost = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))], verbose_name='Полная стоимость')
+    date_of_sale = models.DateTimeField(editable=False, null=True, blank=True, verbose_name='Дата продажи')
+    client = models.ForeignKey(
+        'User',
+        on_delete=models.CASCADE,
+        related_name='Reservations_as_client',
+        verbose_name='Клиент',
+        limit_choices_to={'role__title': 'Клиент'},
+        null=True
+    )
+    hotel = models.ForeignKey('Hotel', on_delete=models.CASCADE, null=True, verbose_name='Отель')
+    transportation = models.ForeignKey('Event', on_delete=models.CASCADE, null=True, verbose_name='Мероприятие')
+    status = models.CharField(max_length=20, verbose_name='Статус', default="На рассмотрении")
+
+    def clean(self):
+        if self.hotel and self.transportation:
+            if self.hotel.city != self.transportation.tour.city:
+                raise ValidationError("Город отеля и город мероприятия должны совпадать.")
+        if self.transportation and self.full_cost is None:
+            self.full_cost = self.transportation.cost
+        super(Reservation, self).clean()
+
+
+
+    def save(self, *args, **kwargs):
+        if  not self.date_of_sale:
+            self.date_of_sale = timezone.localtime(timezone.now())
+
+        super(Reservation, self).save(*args, **kwargs)
+
+        super(Reservation, self).save(*args, **kwargs)
+
+        # Обновление статуса и количества мест на мероприятии
+        if self.transportation:
+            self.transportation.update_status_and_seats(self)
+
+    def __str__(self):
+        return f"Бронирование {self.transportation.title} на {self.date_of_sale}"

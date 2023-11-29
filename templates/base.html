@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    {%load static %}
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Быстрее света{% endblock title %}</title>
+</head>
+
+<body>
+    <header>
+        <nav class="container header-nav">
+            <a href="{%url 'home'%}">
+                <img src="{% static "image/logo.png" %}" alt="лого" height="70" width="70">
+            </a>
+            <ul class="nav-list">
+                <li class="nav-list-item"><a href="#" style="color: #FFFFFF">Услуги</a></li>
+                <li class="nav-list-item"><a href="{%url 'contact'%}" style="color: #FFFFFF">Контакты</a></li>
+            </ul>
+            <div class="signin">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}" style="color: #FFFFFF">Выход</a>
+                {% else %}
+                    <a href="{%url 'login'%}" style="color: #FFFFFF">Войти</a>
+                    <a href="{%url 'signup'%}" style="margin-left: 20px;color: #FFFFFF">Зарегистрироваться</a>
+                {% endif %}
+            </div>
+
+        </nav>
+    </header>
+
+    {% block content %}
+    {% endblock %}
+
+    <footer>
+        <div class="container header-nav">
+            <a href="{%url 'home'%}">
+                <img src="{% static "image/logo.png" %}" alt="лого" height="70" width="70">
+            </a>
+            <ul class="nav-list">
+                <li class="nav-list-item"><a href="#" style="color: #FFFFFF">Услуги</a></li>
+                <li class="nav-list-item"><a href="{%url 'contact'%}" style="color: #FFFFFF">Контакты</a></li>
+            </ul>
+            <p class="copiright">&copy; "Быстрее света" 2023</p>
+        </div>
+    </footer>
+</body>
+
+</html>

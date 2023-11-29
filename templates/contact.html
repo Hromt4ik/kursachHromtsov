@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{%load static %}
+{% block title %}Контакты{% endblock title %}
+{% block content %}
+<main>
+    <div class="container">
+        <h2 style="text-align: center; margin-bottom: 20px;">Контакты</h2>
+        <div class="img-phone">
+        <img  src="{% static "image/phone.jpg" %}" alt="медвед">
+            </div>
+
+        <div>
+            <ul>
+                <li>
+                    <h3>Телефон</h3>
+                    <p>8-982-321-32-42</p>
+                </li>
+                <li>
+                    <h3>E-mail</h3>
+                    <p>lol@mail.ru</p>
+                </li>
+                <li>
+                    <h3>Адрес</h3>
+                    <p>ул. Московская, 5, Екатеринбург, Свердловская обл., 620014</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</main>
+{% endblock %}
