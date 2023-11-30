@@ -7,10 +7,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.views.generic import TemplateView
-
+from .models import Package
 from django.http import JsonResponse
 from . import models
-from .forms import CustomUserCreationForm
+from django.shortcuts import render
+from .forms import CustomUserCreationForm, PackageForm
 # Create your views here.
 
 
@@ -26,6 +27,15 @@ class ServicesPageView(TemplateView):
 
 class AccountPageView(TemplateView):
     template_name = 'account.html'
+
+def package_create_view(request):
+    if request.method == 'POST':
+        form = PackageForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = PackageForm()
+    return render(request, 'package_create.html', {'form': form})
 
 def personalAccView(request):
     # Получаем текущего пользователя
@@ -57,3 +67,12 @@ def package_detail(request):
             return JsonResponse({'message': 'Неверный формат ID'})
 
     return JsonResponse({'message': 'Введите ID посылки'})
+
+def package_create_view(request):
+    if request.method == 'POST':
+        form = PackageForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = PackageForm()
+    return render(request, 'package_create.html', {'form': form})

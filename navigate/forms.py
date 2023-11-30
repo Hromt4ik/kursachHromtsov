@@ -13,6 +13,13 @@ class CustomUserCreationForm(UserCreationForm):
                                                  format='%Y-%m-%d')
         }
 
+class PackageForm(forms.ModelForm):
+    class Meta:
+        model = Package
+        fields = [ 'sending_address', 'delivery_address', 'weight', 'date_of_receipt'
+            , 'length', 'height', 'width', 'cost',
+                  'cargo_category','comments',]
+
 
 class CustomUserChangeForm(UserChangeForm):
     model = CustomUser

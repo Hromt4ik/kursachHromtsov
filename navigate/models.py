@@ -77,7 +77,7 @@ class Package(models.Model):
         verbose_name='Адрес доставки',
     )
     weight = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Вес')
-    date_of_receipt = models.DateField(verbose_name='Дата принятия')
+    date_of_receipt = models.DateField(verbose_name='Дата отправки')
     delivery_date = models.DateField(verbose_name='Дата доставки в пункт выдачи')
     date_of_issue = models.DateField(verbose_name='Дата выдачи')
     length = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='длина')

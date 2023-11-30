@@ -1,0 +1,39 @@
+
+{% extends 'base.html' %}
+{%load static %}
+
+{% block content %}
+<main>
+    <div class="container">
+
+
+<form class="create-pakeges" method="post">
+    {% csrf_token %}
+        {{ form.as_p }}
+
+    <button type="submit">Создать</button>
+    <button type="submit" id="calculate">Расчитать стоимость</button>
+</form>
+
+            </div>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+document.getElementById("calculate").addEventListener("click", function(e){
+    e.preventDefault();
+    // Получаем значения веса и ширины
+    var weight = parseFloat(document.getElementById("id_weight").value);
+    var width = parseFloat(document.getElementById("id_width").value);
+    // Проверяем, являются ли вес и ширина числами
+    if (isNaN(weight) || isNaN(width)) {
+      alert("Пожалуйста, введите действительные числовые значения для веса и ширины.");
+    } else {
+      // Расчет стоимости
+      var cost = weight * width;
+      document.getElementById("id_cost").value = cost;
+    }
+  });
+});
+</script>
+{% endblock %}
