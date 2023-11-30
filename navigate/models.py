@@ -25,6 +25,9 @@ class CargoCategory(models.Model):
     coefficient = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Коэфициент перевозки')
     comments = models.CharField(max_length=500, verbose_name='Комментарии', null=True, blank=True)
 
+    def __str__(self):
+        return self.name +  "( " + self.comments + " )"
+
 class Warehouse(models.Model):
     region = models.CharField(max_length=200, verbose_name='Регион')
     city = models.CharField(max_length=200, verbose_name='Город')
