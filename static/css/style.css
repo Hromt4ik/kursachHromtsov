@@ -374,12 +374,19 @@ h2{
 }
 
 .sign-up, .login{
-    color: white;
+     color: white;
     background-color: #006382;
     padding: 10px;
     border-radius: 10px;
-    margin-top: 20px;
+    margin-top: 10px;
 }
+
+.sign-up:hover, .login:hover{
+	background: rgba(0,0,0,0);
+	color: #006382;
+	box-shadow: inset 0 0 0 3px #006382;
+}
+
 
 .form-sign > p, .form-login > p{
     display: flex;
@@ -568,4 +575,90 @@ margin-left: 20px;
 
 }
 
+.wrapper {
+display: flex;
+flex-direction: column;
+
+}
+
+.wrapper-div{
+    display: flex;
+    flex-direction: column;
+    height: 150px;
+}
+.wrapper-div-line3{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.wrapper-div-line4{
+    display: flex;
+    align-item: center;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.wrapper-div-line4 > .wrapper-div{
+    display: flex;
+    flex-direction: column;
+}
+
+.wrapper-div-line4 > .wrapper-div{
+    min-width: 32%;
+}
+
+
+.wrapper-div-line3 > .wrapper-div{
+    min-width: 32%;
+}
+.wrapper-div > h3{
+border-bottom: 5px solid #006382;
+font-size: 16px;
+margin-bottom: 5px;
+text-align: start;
+}
+
+.wrapper-div > p{
+text-align: start;
+}
+
+.list-bottom{
+    color: white;
+    background-color: #006382;
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 10px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    min-width:100%
+}
+
+.list-bottom:hover{
+	background: rgba(0,0,0,0);
+	color: #006382;
+	box-shadow: inset 0 0 0 3px #006382;
+}
+
+.chenge-bottom{
+    color: white;
+    background-color: #006382;
+    padding: 10px;
+    margin-top: 20px;
+    margin-left: 125px;
+    border-radius: 10px;
+    display: flex;
+    max-height: 50px;
+    text-align: center;
+    align-items: center;
+}
+
+.chenge-bottom:hover{
+	background: rgba(0,0,0,0);
+	color: #006382;
+	box-shadow: inset 0 0 0 3px #006382;
+}
 

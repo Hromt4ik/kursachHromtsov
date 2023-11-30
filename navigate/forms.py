@@ -6,8 +6,8 @@ from .models import CustomUser, Package
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = CustomUser
-        fields = ('name', 'surname', 'patronymic', 'phone_number', 'email', 'passport', 'date_of_birth',
-                  'username' )
+        fields = ('first_name', 'last_name', 'patronymic', 'phone_number', 'email', 'passport', 'date_of_birth',
+                  'username')
         widgets = {
             'date_of_birth': forms.DateTimeInput(attrs={'type': 'date', 'required': 'required'},
                                                  format='%Y-%m-%d')
@@ -16,7 +16,7 @@ class CustomUserCreationForm(UserCreationForm):
 
 class CustomUserChangeForm(UserChangeForm):
     model = CustomUser
-    fields = ('name', 'surname', 'patronymic', 'phone_number', 'email', 'passport', 'date_of_birth',
+    fields = ('first_name', 'last_name', 'patronymic', 'phone_number', 'email', 'passport', 'date_of_birth',
               'username')
     widgets = {
         'date_of_birth': forms.DateTimeInput(attrs={'type': 'date', 'required': 'required'},

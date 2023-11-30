@@ -9,18 +9,15 @@ from django.contrib.auth.models import AbstractUser
 
 class Role(models.Model):
     name = models.CharField(max_length=100, verbose_name='Наименование')
-    salary = models.IntegerField(validators=[
-            MinValueValidator(1)
-        ],verbose_name='Наименование')
 
 class CustomUser(AbstractUser):
-    name = models.CharField(max_length=50, verbose_name='Имя', null=True)
-    surname = models.CharField(max_length=50, verbose_name='Фамилия', null=True)
+    first_name = models.CharField(max_length=50, verbose_name='Имя', null=True)
+    last_name = models.CharField(max_length=50, verbose_name='Фамилия', null=True)
     patronymic = models.CharField(max_length=50, verbose_name='Отчество', null=True)
     phone_number = models.CharField(max_length=11, verbose_name='Номер телефона', null=True)
-    passport = models.CharField(max_length=10, verbose_name='Паспорт', unique=True, null=True)
+    passport = models.CharField(max_length=10, verbose_name='Серия номер паспорта', unique=True, null=True)
     date_of_birth = models.DateField(verbose_name='Дата рождения', null=True)
-    role_id = models.ForeignKey('Role', on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Id роли')
+    role_id = models.ForeignKey('Role', on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Роль')
 
 
 class CargoCategory(models.Model):
@@ -43,7 +40,9 @@ class Car(models.Model):
     stamp = models.CharField(max_length=200, verbose_name='Марка')
     model = models.CharField(max_length=200, verbose_name='Модель')
     status = models.CharField(max_length=200, verbose_name='Статус')
-    driver_id = models.ForeignKey(settings.AUTH_USER_MODEL, limit_choices_to={'post__name': "Сотрудник"}, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Id водителя')
+    driver_id = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                  #limit_choices_to={'post__name': "Сотрудник"},
+                                  on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Id водителя')
 
 class PointIssue(models.Model):
     region = models.CharField(max_length=200, verbose_name='Регион')
@@ -58,23 +57,23 @@ class Package(models.Model):
     client_id = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
-        related_name='Reservations_as_client',
+        related_name='Packages_as_client',
         verbose_name='Клиент',
-        limit_choices_to={'post__name': "Клиент"},
+        # limit_choices_to={'Role__name': "Клиент"},
         null=True,
     )
     comments = models.CharField(max_length=500, verbose_name='Комментарии', null=True, blank=True)
     sending_address = models.ForeignKey(
         'PointIssue',
         on_delete=models.SET_NULL,
-        related_name='Reservations_as_sending_address',
+        related_name='Packages_as_sending_address',
         verbose_name='Адрес отправки',
         null=True,
     )
     delivery_address =models.ForeignKey(
         'PointIssue',
         on_delete=models.SET_NULL,
-        related_name='Reservations_as_delivery_address',null=True,
+        related_name='Packages_as_delivery_address',null=True,
         verbose_name='Адрес доставки',
     )
     weight = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Вес')
@@ -87,9 +86,9 @@ class Package(models.Model):
     employee_id = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
-        related_name='Reservations_as_employee',
+        related_name='Packages_as_employee',
         verbose_name='Сотрудник',
-        limit_choices_to={'post__name': "Сотрудник"},
+        # limit_choices_to={'Role__name': "Сотрудник"},
         null=True
     )
     cost = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Стоимость доставки')

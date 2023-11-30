@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{%load static %}
+{% block title %}{{user.username}}{% endblock title %}
+
+{% block content %}
+<main>
+    <div class="container">
+        <h2 style="text-align: center; margin-bottom: 20px;">Личный кабинет</h2>
+        <div class="wrapper">
+          <div class="wrapper-div">
+              <h3>Имя</h3>
+              <p>{{user.first_name}}</p>
+          </div>
+         <div class="wrapper-div">
+              <h3>Фамилия</h3>
+              <p>{{user.last_name}}</p>
+          </div>
+          <div class="wrapper-div">
+              <h3>Отчетво</h3>
+              <p>{{user.patronymic}}</p>
+          </div>
+            <div class="wrapper-div-line3">
+          <div class="wrapper-div">
+              <h3>Телефон</h3>
+              <p>{{user.phone_number}}</p>
+          </div>
+
+            <div class="wrapper-div">
+              <h3>Серия номер паспорта</h3>
+              <p>{{user.passport}}</p>
+            </div>
+            <div class="wrapper-div">
+              <h3>Дата рождения</h3>
+              <p>{{user.date_of_birth}}</p>
+            </div>
+    </div>
+            <div class="wrapper-div-line4">
+                <div class="wrapper-div">
+                    <h3>Имя пользователя</h3>
+                    <p>{{user.username}}</p>
+                </div>
+                <div class="wrapper-div">
+                    <h3>E-mail</h3>
+                    <p>{{user.email}}</p>
+                </div>
+                <button class="chenge-bottom" type="submit">Изменить данные</button>
+            </div>
+        </div>
+        <div class="command">
+            <a class="list-bottom" href="{%url 'mypakeges'%}">Мои посылки</a>
+        </div>
+  </div>
+</main>
+{% endblock %}

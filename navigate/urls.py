@@ -5,5 +5,7 @@ urlpatterns = [
     path('signup/', views.SignUp.as_view(), name='signup'),
     path('', views.HomePageView.as_view(), name='home'),
     path('contact/', views.ContactPageView.as_view(), name='contact'),
-    path('services/', views.ServicesPageView.as_view(), name='services')
+    path('services/', views.ServicesPageView.as_view(), name='services'),
+    path('account/', views.personalAccView, name='account'),
+    path('mypakeges/', views.MypakegesPageView.as_view(), name='mypakeges')
 ]

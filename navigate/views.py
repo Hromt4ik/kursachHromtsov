@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -24,6 +24,22 @@ class ContactPageView(TemplateView):
 class ServicesPageView(TemplateView):
     template_name = 'services.html'
 
+class AccountPageView(TemplateView):
+    template_name = 'account.html'
+
+def personalAccView(request):
+    # Получаем текущего пользователя
+    user = request.user
+
+
+    if user.is_authenticated and not user.is_anonymous:
+        # reservations = Reservation.objects.filter(client=user)
+        return render(request, 'account.html', {'user': user})
+    else:
+        return redirect('login')
+
+class MypakegesPageView(TemplateView):
+    template_name = 'mypakeges.html'
 class SignUp(CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('login')

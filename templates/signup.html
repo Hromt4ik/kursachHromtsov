@@ -6,7 +6,7 @@
     {% block content %}
     <main>
     <div class="container">
-    <h2>Регистрация</h2>
+    <h2 style="text-align: center; margin-bottom: 20px;">Регистрация</h2>
     <form class="form-sign" method="post">
         {% csrf_token %}
         {{ form.as_p }}

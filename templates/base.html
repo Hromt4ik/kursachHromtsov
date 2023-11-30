@@ -21,7 +21,7 @@
             </ul>
             <div class="signin">
                 {% if user.is_authenticated %}
-                    <a href="#" style="color: #FFFFFF">
+                    <a href="{%url 'account'%}" style="color: #FFFFFF">
                         <div class="user-header">
                             <img src="{% static "image/user2.png" %}" alt="лого" height="70" width="70">
                             <p class="user-header-p">{{user.username}}</p>
