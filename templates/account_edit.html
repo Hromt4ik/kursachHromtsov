@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{%load static %}
+{% block title %}change user{% endblock title %}
+
+{% block content %}
+<main>
+    <div class="container">
+        <h2 style="text-align: center; margin-bottom: 20px;">Личный кабинет</h2>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Изменить" />
+        </form>
+  </div>
+</main>
+{% endblock %}

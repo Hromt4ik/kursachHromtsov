@@ -26,15 +26,19 @@ class CargoCategory(models.Model):
     comments = models.CharField(max_length=500, verbose_name='Комментарии', null=True, blank=True)
 
     def __str__(self):
-        return self.name +  "( " + self.comments + " )"
+        return self.name + " ( " + self.comments + " )"
 
 class Warehouse(models.Model):
     region = models.CharField(max_length=200, verbose_name='Регион')
     city = models.CharField(max_length=200, verbose_name='Город')
     street = models.CharField(max_length=200, verbose_name='Улица')
     home = models.CharField(max_length=200, verbose_name='Дом')
-    corpus = models.CharField(max_length=200, verbose_name='Корпус')
-
+    corpus = models.CharField(max_length=200, verbose_name='Корпус', null=True, blank=True)
+    def __str__(self):
+        if(str(self.corpus) == "None"):
+            return str(self.region) + ", г." + str(self.city) + ", ул." + str(self.street) + ", д." + str(self.home)
+        else:
+            return str(self.region) + ", г." + str(self.city) + ", ул." + str(self.street) + ", д." + str(self.home) + ", к." + str(self.corpus)
 
 
 class Car(models.Model):
@@ -45,15 +49,22 @@ class Car(models.Model):
     status = models.CharField(max_length=200, verbose_name='Статус')
     driver_id = models.ForeignKey(settings.AUTH_USER_MODEL,
                                   #limit_choices_to={'post__name': "Сотрудник"},
-                                  on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Id водителя')
+                                  on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Водитель')
 
 class PointIssue(models.Model):
     region = models.CharField(max_length=200, verbose_name='Регион')
     city = models.CharField(max_length=200, verbose_name='Город')
     street = models.CharField(max_length=200, verbose_name='Улица')
     home = models.CharField(max_length=10, verbose_name='Дом')
-    corpus = models.CharField(max_length=10, verbose_name='Корпус')
-    warehouse_id = models.ForeignKey('Warehouse', on_delete=models.SET_NULL,null=True, verbose_name='Id склада')
+    corpus = models.CharField(max_length=10, verbose_name='Корпус', null=True, blank=True)
+    warehouse_id = models.ForeignKey('Warehouse', on_delete=models.SET_NULL,null=True, verbose_name='Cклад')
+
+    def __str__(self):
+        if (str(self.corpus) == "None"):
+            return str(self.region) + ", г." + str(self.city) + ", ул." + str(self.street) + ", д." + str(self.home)
+        else:
+            return str(self.region) + ", г." + str(self.city) + ", ул." + str(self.street) + ", д." + str(
+                self.home) + ", к." + str(self.corpus)
 
 
 class Package(models.Model):
@@ -79,13 +90,13 @@ class Package(models.Model):
         related_name='Packages_as_delivery_address',null=True,
         verbose_name='Адрес доставки',
     )
-    weight = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Вес')
+    weight = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Вес(кг)')
     date_of_receipt = models.DateField(verbose_name='Дата отправки')
-    delivery_date = models.DateField(verbose_name='Дата доставки в пункт выдачи')
-    date_of_issue = models.DateField(verbose_name='Дата выдачи')
-    length = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='длина')
-    height = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='высота')
-    width = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='ширина')
+    delivery_date = models.DateField(verbose_name='Дата доставки в пункт выдачи', null=True, blank=True,)
+    date_of_issue = models.DateField(verbose_name='Дата выдачи', null=True, blank=True,)
+    length = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Длина(м)')
+    height = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Высота(м)')
+    width = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Ширина(м)')
     employee_id = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
@@ -100,3 +111,5 @@ class Package(models.Model):
     status = models.CharField(max_length=200, verbose_name='Статус')
     car_id = models.ForeignKey('Car', on_delete=models.SET_NULL, null=True, blank=True,
                                        verbose_name='Номер Машины')
+    def __str__(self):
+        return " Номер посылки: " + str(self.id) + " стоимость: " + str(self.cost) + " cтатус: " + str(self.status) + " комментарий: " + str(self.comments)

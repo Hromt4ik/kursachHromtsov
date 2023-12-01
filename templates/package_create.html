@@ -9,10 +9,38 @@
 
 <form class="create-pakeges" method="post">
     {% csrf_token %}
-        {{ form.as_p }}
+    {{ form.as_p }}
+    <p>
+    <label for="id_date_of_receipt">Дата отправки:</label>
+    <input type="date" name="date_of_receipt" required id="id_date_of_receipt">
+  </p>
+  <p>
+    <label for="id_length">Длина(м):</label>
+    <input type="number" name="length" step="0.01" required id="id_length">
+  </p>
 
-    <button type="submit">Создать</button>
-    <button type="submit" id="calculate">Расчитать стоимость</button>
+
+  <p>
+    <label for="id_height">Высота(м):</label>
+    <input type="number" name="height" step="0.01" required id="id_height">
+  </p>
+
+
+
+  <p>
+    <label for="id_width" >Ширина(м):</label>
+    <input type="number" name="width" step="0.01" required id="id_width">
+  </p>
+    <p>
+    <label  for="id_cost">Стоимость доставки:</label>
+    <input readonly="readonly" type="number" name="cost" step="0.01" required id="id_cost">
+
+
+  </p>
+    <div class="flex-button">
+        <button class="create-button" type="submit" id="calculate">Расчитать стоимость</button>
+        <button class="create-button-2" type="submit">Создать</button>
+    </div>
 </form>
 
             </div>

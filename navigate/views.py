@@ -7,11 +7,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.views.generic import TemplateView
-from .models import Package
+from .models import Package, CustomUser
 from django.http import JsonResponse
 from . import models
 from django.shortcuts import render
-from .forms import CustomUserCreationForm, PackageForm
+from django import forms
+from .forms import CustomUserCreationForm, CustomUserChangeForm, PackageForm, ChangeUserForm
 # Create your views here.
 
 
@@ -32,10 +33,11 @@ def package_create_view(request):
     if request.method == 'POST':
         form = PackageForm(request.POST)
         if form.is_valid():
+            Package.client_id = request.CustomUser
             form.save()
     else:
         form = PackageForm()
-    return render(request, 'package_create.html', {'form': form})
+    return render(request, 'mypakages.html')
 
 def personalAccView(request):
     # Получаем текущего пользователя
@@ -76,3 +78,14 @@ def package_create_view(request):
     else:
         form = PackageForm()
     return render(request, 'package_create.html', {'form': form})
+
+class CustomUserUpdateView(LoginRequiredMixin, UpdateView):
+
+    form_class = ChangeUserForm
+    # fields = ('first_name', 'last_name', 'patronymic', 'phone_number', 'email', 'passport', 'date_of_birth',
+    #           'username')
+    widgets = {
+        'date_of_birth': forms.DateInput(attrs={'type': 'date', 'required': 'required'},
+                                             format='%Y-%m-%d')
+    }
+    template_name = 'account_edit.html'
