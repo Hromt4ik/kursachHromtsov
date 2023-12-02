@@ -12,7 +12,7 @@ from django.http import JsonResponse
 from . import models
 from django.shortcuts import render
 from django import forms
-from .forms import CustomUserCreationForm, CustomUserChangeForm, PackageForm, ChangeUserForm
+from .forms import CustomUserCreationForm, CustomUserChangeForm, PakagesForm, ChangeUserForm
 # Create your views here.
 
 
@@ -52,6 +52,9 @@ def personalAccView(request):
 
 class MypakegesPageView(TemplateView):
     template_name = 'mypakeges.html'
+
+class EmployeerPakegesPageView(TemplateView):
+        template_name = 'employeerpakages.html'
 class SignUp(CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('login')
@@ -72,11 +75,12 @@ def package_detail(request):
 
 def package_create_view(request):
     if request.method == 'POST':
-        form = PackageForm(request.POST)
+        form = PakagesForm(request.POST)
         if form.is_valid():
+            Package.Packages_as_client = request.user.id
             form.save()
     else:
-        form = PackageForm()
+        form = PakagesForm()
     return render(request, 'package_create.html', {'form': form})
 
 class CustomUserUpdateView(LoginRequiredMixin, UpdateView):

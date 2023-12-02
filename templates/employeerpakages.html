@@ -1,15 +1,14 @@
 {% extends 'base.html' %}
 {%load static %}
-{% block title %}Изменить данные{% endblock title %}
+{% block title %}Посылки{% endblock title %}
 
 {% block content %}
 <main>
     <div class="container">
-        <h2 style="text-align: center; margin-bottom: 20px;">Личный кабинет</h2>
+        <h2 style="text-align: center; margin-bottom: 20px;">Посылки</h2>
         <form action="" method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <input type="submit" value="Изменить" />
         </form>
   </div>
 </main>

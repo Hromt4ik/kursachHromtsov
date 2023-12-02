@@ -10,33 +10,7 @@
 <form class="create-pakeges" method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <p>
-    <label for="id_date_of_receipt">Дата отправки:</label>
-    <input type="date" name="date_of_receipt" required id="id_date_of_receipt">
-  </p>
-  <p>
-    <label for="id_length">Длина(м):</label>
-    <input type="number" name="length" step="0.01" required id="id_length">
-  </p>
 
-
-  <p>
-    <label for="id_height">Высота(м):</label>
-    <input type="number" name="height" step="0.01" required id="id_height">
-  </p>
-
-
-
-  <p>
-    <label for="id_width" >Ширина(м):</label>
-    <input type="number" name="width" step="0.01" required id="id_width">
-  </p>
-    <p>
-    <label  for="id_cost">Стоимость доставки:</label>
-    <input readonly="readonly" type="number" name="cost" step="0.01" required id="id_cost">
-
-
-  </p>
     <div class="flex-button">
         <button class="create-button" type="submit" id="calculate">Расчитать стоимость</button>
         <button class="create-button-2" type="submit">Создать</button>
@@ -53,13 +27,16 @@ document.getElementById("calculate").addEventListener("click", function(e){
     // Получаем значения веса и ширины
     var weight = parseFloat(document.getElementById("id_weight").value);
     var width = parseFloat(document.getElementById("id_width").value);
+    var length = parseFloat(document.getElementById("id_length").value);
+    var height = parseFloat(document.getElementById("id_height").value);
     // Проверяем, являются ли вес и ширина числами
-    if (isNaN(weight) || isNaN(width)) {
-      alert("Пожалуйста, введите действительные числовые значения для веса и ширины.");
+    if (isNaN(weight) || isNaN(width)|| isNaN(length)|| isNaN(height) ||
+     weight <= 0 || width <= 0|| length <= 0 || height <= 0) {
+      alert("Пожалуйста, введите действительные числовые значения для веса и размера посылки.");
     } else {
       // Расчет стоимости
-      var cost = weight * width;
-      document.getElementById("id_cost").value = cost;
+      var cost = weight * width * length * height * 50;
+      document.getElementById("id_cost").value = Math.ceil(cost);
     }
   });
 });

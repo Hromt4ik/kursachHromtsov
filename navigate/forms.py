@@ -13,15 +13,15 @@ class CustomUserCreationForm(UserCreationForm):
                                                  format='%Y-%m-%d')
         }
 
-class PackageForm(forms.ModelForm):
-    class Meta:
-        model = Package
-        fields = ['sending_address', 'delivery_address', 'weight',
-                  'cargo_category', 'comments',]
-        widgets = {
-            'date_of_receipt': forms.DateTimeInput(attrs={'type': 'date', 'required': 'required'},
-                                                 format='%Y-%m-%d')
-        }
+# class PackageForm(forms.ModelForm):
+#     class Meta:
+#         model = Package
+#         fields = ['sending_address', 'delivery_address', 'weight',
+#                   'cargo_category', 'comments',]
+#         widgets = {
+#             'date_of_receipt': forms.DateTimeInput(attrs={'type': 'date', 'required': 'required'},
+#                                                  format='%Y-%m-%d')
+#         }
 
 
 class CustomUserChangeForm(UserChangeForm):
@@ -36,8 +36,12 @@ class CustomUserChangeForm(UserChangeForm):
 class PakagesForm(forms.ModelForm):
     class Meta:
         model = Package
-        fields = ('comments', 'sending_address', 'delivery_address', 'weight', 'date_of_receipt', 'delivery_date',
-              'length', 'height', 'width', 'cost', 'cargo_category', 'status')
+        fields = ['comments', 'sending_address', 'delivery_address', 'weight', 'length', 'height','date_of_receipt',
+                  'width', 'cost', 'cargo_category', 'status']
+        widgets = {
+            'date_of_receipt': forms.DateTimeInput(attrs={'type': 'date', 'required': 'required'},
+                                                         format='%Y-%m-%d')
+        }
 
 class ChangeUserForm(forms.ModelForm):
     model = CustomUser

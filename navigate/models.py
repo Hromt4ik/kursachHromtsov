@@ -9,6 +9,8 @@ from django.contrib.auth.models import AbstractUser
 
 class Role(models.Model):
     name = models.CharField(max_length=100, verbose_name='Наименование')
+    def __str__(self):
+        return self.name
 
 class CustomUser(AbstractUser):
     first_name = models.CharField(max_length=50, verbose_name='Имя', null=True)
@@ -18,7 +20,8 @@ class CustomUser(AbstractUser):
     passport = models.CharField(max_length=10, verbose_name='Серия номер паспорта', unique=True, null=True)
     date_of_birth = models.DateField(verbose_name='Дата рождения', null=True)
     role_id = models.ForeignKey('Role', on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Роль')
-
+    def __str__(self):
+        return "Логин:  " + self.username + " Роль: " + str(self.role_id)
 
 class CargoCategory(models.Model):
     name = models.CharField(max_length=200, verbose_name='Наименование')
