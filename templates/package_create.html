@@ -8,6 +8,25 @@
 
 
 <form class="create-pakeges" method="post">
+
+<!--      <p>-->
+<!--    <label for="id_sending_address">Адрес отправки:</label>-->
+<!--    <select name="sending_address" required id="id_sending_address">-->
+<!--  <option value="" selected>-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;</option>-->
+
+<!--  <option value="1">Свердловская Область, г.Екатеринбург, ул.Абрикосово, д.543, к.4</option>-->
+
+<!--  <option value="2">Еврейская республика, г.Сочи, ул.Гогема, д.55</option>-->
+
+<!--</select>-->
+
+<!--    <label for="id_delivery_address">Адрес доставки:</label>-->
+<!--    <input list="id_delivery_address" placeholder="somebody">-->
+<!--    <datalist name="delivery_address"  id="id_delivery_address">-->
+<!--    {%for adress in PointIssue %}-->
+<!--    <option>{{adress.city}}</option>-->
+<!--        {% endfor %}-->
+<!--    </datalist>-->
     {% csrf_token %}
     {{ form.as_p }}
 
@@ -15,6 +34,7 @@
         <button class="create-button" type="submit" id="calculate">Расчитать стоимость</button>
         <button class="create-button-2" type="submit">Создать</button>
     </div>
+
 </form>
 
             </div>

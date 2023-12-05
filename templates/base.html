@@ -16,12 +16,12 @@
                 <img src="{% static "image/logo.png" %}" alt="лого" height="70" width="70">
             </a>
             <ul class="nav-list">
-<!--                {% if user.role_id == 'Клиент' or  not user.is_authenticated %}-->
+               {% if user.role_id.name == 'Клиент' or  not user.is_authenticated %}
                 <li class="nav-list-item"><a href="{%url 'services'%}" style="color: #FFFFFF">Услуги</a></li>
                 <li class="nav-list-item"><a href="{%url 'contact'%}" style="color: #FFFFFF">Контакты</a></li>
-<!--                {% else %}-->
+               {% else %}
                 <li class="nav-list-item"><a href="{%url 'employeerpakages'%}" style="color: #FFFFFF">Посылки</a></li>
-<!--                {% endif %}-->
+              {% endif %}
             </ul>
             <div class="signin">
                 {% if user.is_authenticated %}

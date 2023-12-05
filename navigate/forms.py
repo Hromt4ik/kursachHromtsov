@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import CustomUser, Package
+from .models import CustomUser, Package, PointIssue
+from  django.shortcuts import render
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -13,15 +14,7 @@ class CustomUserCreationForm(UserCreationForm):
                                                  format='%Y-%m-%d')
         }
 
-# class PackageForm(forms.ModelForm):
-#     class Meta:
-#         model = Package
-#         fields = ['sending_address', 'delivery_address', 'weight',
-#                   'cargo_category', 'comments',]
-#         widgets = {
-#             'date_of_receipt': forms.DateTimeInput(attrs={'type': 'date', 'required': 'required'},
-#                                                  format='%Y-%m-%d')
-#         }
+
 
 
 class CustomUserChangeForm(UserChangeForm):
@@ -44,7 +37,15 @@ class PakagesForm(forms.ModelForm):
         }
 
 class ChangeUserForm(forms.ModelForm):
-    model = CustomUser
-    fields = ('first_name', 'last_name', 'patronymic', 'phone_number', 'email', 'passport', 'date_of_birth',
-              'username')
-    date_of_birth = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    # model = CustomUser
+    # fields = ('first_name', 'last_name', 'patronymic', 'phone_number', 'email', 'passport', 'date_of_birth',
+    #           'username')
+    # date_of_birth = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+
+    password = forms.CharField(widget=forms.PasswordInput(), required=False)
+
+    class Meta:
+        model = CustomUser
+        fields = ('first_name', 'last_name', 'patronymic', 'phone_number', 'email', 'passport', 'date_of_birth',
+                   'username')
+

@@ -6,11 +6,15 @@ from decimal import Decimal
 from django.utils import timezone
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
-
+from django.utils.translation import gettext_lazy as _
 class Role(models.Model):
     name = models.CharField(max_length=100, verbose_name='Наименование')
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = "Роль"
+        verbose_name_plural = "Роли"
 
 class CustomUser(AbstractUser):
     first_name = models.CharField(max_length=50, verbose_name='Имя', null=True)
@@ -23,6 +27,10 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return "Логин:  " + self.username + " Роль: " + str(self.role_id)
 
+    class Meta:
+        verbose_name = "Пользователя"
+        verbose_name_plural = "Пользователи"
+
 class CargoCategory(models.Model):
     name = models.CharField(max_length=200, verbose_name='Наименование')
     coefficient = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Коэфициент перевозки')
@@ -30,6 +38,10 @@ class CargoCategory(models.Model):
 
     def __str__(self):
         return self.name + " ( " + self.comments + " )"
+
+    class Meta:
+        verbose_name = "Категорию"
+        verbose_name_plural = "Категории"
 
 class Warehouse(models.Model):
     region = models.CharField(max_length=200, verbose_name='Регион')
@@ -43,6 +55,9 @@ class Warehouse(models.Model):
         else:
             return str(self.region) + ", г." + str(self.city) + ", ул." + str(self.street) + ", д." + str(self.home) + ", к." + str(self.corpus)
 
+    class Meta:
+        verbose_name = "Склад"
+        verbose_name_plural = "Склады"
 
 class Car(models.Model):
     vin = models.CharField(max_length=17, verbose_name='VIN', unique=True)
@@ -53,6 +68,13 @@ class Car(models.Model):
     driver_id = models.ForeignKey(settings.AUTH_USER_MODEL,
                                   #limit_choices_to={'post__name': "Сотрудник"},
                                   on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Водитель')
+    def __str__(self):
+        return ("Гос.номер :  " + str(self.state_number) + " Марка: " + str(self.stamp)
+                + " Модель: " + str(self.model) + " Статус: " + str(self.status))
+
+    class Meta:
+        verbose_name = "Машину"
+        verbose_name_plural = "Машины"
 
 class PointIssue(models.Model):
     region = models.CharField(max_length=200, verbose_name='Регион')
@@ -62,12 +84,18 @@ class PointIssue(models.Model):
     corpus = models.CharField(max_length=10, verbose_name='Корпус', null=True, blank=True)
     warehouse_id = models.ForeignKey('Warehouse', on_delete=models.SET_NULL,null=True, verbose_name='Cклад')
 
+    class Meta:
+        verbose_name = "Пункт выдачи"
+        verbose_name_plural = "Пункты выдачи"
+
     def __str__(self):
         if (str(self.corpus) == "None"):
             return str(self.region) + ", г." + str(self.city) + ", ул." + str(self.street) + ", д." + str(self.home)
         else:
             return str(self.region) + ", г." + str(self.city) + ", ул." + str(self.street) + ", д." + str(
                 self.home) + ", к." + str(self.corpus)
+
+
 
 
 class Package(models.Model):
@@ -114,5 +142,19 @@ class Package(models.Model):
     status = models.CharField(max_length=200, verbose_name='Статус')
     car_id = models.ForeignKey('Car', on_delete=models.SET_NULL, null=True, blank=True,
                                        verbose_name='Номер Машины')
+
+    class Meta:
+        verbose_name = "Посылку"
+        verbose_name = "Посылку"
+        verbose_name_plural = "Посылки"
+
+
+    def clean(self):
+        if self.sending_address == self.delivery_address:
+            raise ValidationError(_('Адрес доставки и адрес отправки не может совпадать'))
+
+
     def __str__(self):
-        return " Номер посылки: " + str(self.id) + " стоимость: " + str(self.cost) + " cтатус: " + str(self.status) + " комментарий: " + str(self.comments)
+        return (" Номер посылки: " + str(self.id) + " стоимость: " + str(self.cost) + " cтатус: " + str(self.status)
+                + " комментарий: " + str(self.comments))
+

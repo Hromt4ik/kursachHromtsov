@@ -7,9 +7,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.views.generic import TemplateView
-from .models import Package, CustomUser
+from .models import Package, CustomUser, PointIssue
 from django.http import JsonResponse
 from . import models
+from django.contrib.auth.hashers import make_password
 from django.shortcuts import render
 from django import forms
 from .forms import CustomUserCreationForm, CustomUserChangeForm, PakagesForm, ChangeUserForm
@@ -31,12 +32,12 @@ class AccountPageView(TemplateView):
 
 def package_create_view(request):
     if request.method == 'POST':
-        form = PackageForm(request.POST)
+        form = PakagesForm(request.POST)
         if form.is_valid():
             Package.client_id = request.CustomUser
             form.save()
     else:
-        form = PackageForm()
+        form = PakagesForm()
     return render(request, 'mypakages.html')
 
 def personalAccView(request):
@@ -79,6 +80,7 @@ def package_create_view(request):
         if form.is_valid():
             Package.Packages_as_client = request.user.id
             form.save()
+            return redirect('mypakeges')
     else:
         form = PakagesForm()
     return render(request, 'package_create.html', {'form': form})
@@ -93,3 +95,26 @@ class CustomUserUpdateView(LoginRequiredMixin, UpdateView):
                                              format='%Y-%m-%d')
     }
     template_name = 'account_edit.html'
+
+
+
+def search_adress(request):
+    result = PointIssue.city
+    return render(request, "packege_create.html",{"PointIssue": result})
+
+def edit_profile(request):
+    if request.method == 'POST':
+        form = ChangeUserForm(request.POST, instance=request.user)
+        if form.is_valid():
+            user = form.save(commit=False)
+            if not form.cleaned_data['password']:
+                user.password = CustomUser.objects.get(pk=user.pk).password
+            else:
+                new_password = form.cleaned_data['password']
+                user.password = make_password(new_password)
+            user.save()
+            return redirect('home')
+    else:
+        form = ChangeUserForm(instance=request.user)
+
+    return render(request, 'account_edit.html', {'form': form})
