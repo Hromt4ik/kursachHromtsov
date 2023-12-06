@@ -9,6 +9,6 @@ urlpatterns = [
     path('account/', views.personalAccView, name='account'),
     path('account/edit/', views.edit_profile, name='account_edit'),
     path('mypakeges/', views.personalPackages, name='mypakeges'),
-    path('createPakages/', views.package_create_view.as_view(), name='createPakages'),
+    path('createPakages/', views.package_create_view, name='createPakages'),
     path('employeerpakages/', views.EmployeerPakegesPageView.as_view(), name='employeerpakages')
 ]
