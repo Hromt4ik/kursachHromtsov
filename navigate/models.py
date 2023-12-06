@@ -7,6 +7,9 @@ from django.utils import timezone
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.hashers import make_password, is_password_usable
+
+
 class Role(models.Model):
     name = models.CharField(max_length=100, verbose_name='Наименование')
     def __str__(self):
@@ -30,6 +33,13 @@ class CustomUser(AbstractUser):
     class Meta:
         verbose_name = "Пользователя"
         verbose_name_plural = "Пользователи"
+
+    def save(self, *args, **kwargs):
+
+        if self.role_id is None and not self.is_superuser:
+            user_role, created = Role.objects.get_or_create(name='Клиент')
+            self.role_id = user_role
+        super().save(*args, **kwargs)
 
 class CargoCategory(models.Model):
     name = models.CharField(max_length=200, verbose_name='Наименование')

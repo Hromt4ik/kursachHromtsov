@@ -13,9 +13,9 @@ from . import models
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import render
 from django import forms
+
 from .forms import CustomUserCreationForm, CustomUserChangeForm, PakagesForm, ChangeUserForm
 # Create your views here.
-
 
 class HomePageView(TemplateView):
     template_name = 'home.html'
@@ -78,7 +78,7 @@ def package_create_view(request):
     if request.method == 'POST':
         form = PakagesForm(request.POST)
         if form.is_valid():
-            Package.Packages_as_client = request.user.id
+            Package.Packages_as_client = request.user
             form.save()
             return redirect('mypakeges')
     else:
@@ -118,3 +118,21 @@ def edit_profile(request):
         form = ChangeUserForm(instance=request.user)
 
     return render(request, 'account_edit.html', {'form': form})
+
+def personalPackages(request):
+    user = request.user
+    if user.is_authenticated and not user.is_anonymous:
+        packages = Package.objects.filter(client_id = user)
+        return render(request, 'mypakeges.html', {'user': user, 'packeges': packages})
+    else:
+        return redirect('login')
+
+class ClpersonalPackages(LoginRequiredMixin, ListView):
+    model = Package
+    template_name = 'mypakeges.html'
+    login_url = 'login'
+
+    def get_form(self, form_class=None):
+        user = self.request.user
+        packages = Package.objects.filter(client_id=user)
+        return render(self.request, 'mypackages.html', {'user': user, 'packages': packages})

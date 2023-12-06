@@ -6,6 +6,11 @@
     <div class="container">
     <h2 style="text-align: center; margin-bottom: 20px;">Мои посылки</h2>
 
+    {% for p in packages %}
+        <h4>{{ p.delivery_address }}</h4>
+         {% empty %}
+        <p>Нет посылок.</p>
+        {% endfor %}
     </div>
 </main>
 {% endblock %}
