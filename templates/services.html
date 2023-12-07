@@ -11,8 +11,13 @@
           <h3>Отследить Посылку</h3>
           <div class="serv-1">
             <label>Номер посылки:</label>
+              <form method="get">
             <input class="check" type="text">
-            <button class="check-bottom" type="submit">Отследить</button>
+            <button class="check-bottom" type="submit" name="search_id">Отследить</button>
+              </form>
+              {%for p in object_list%}
+              <p> {{p.comments}}</p>
+              {% endfor %}
           </div>
           <div class="results"></div>
           <img class="boxquestion" src="{% static "image/boxquestion.png" %}" alt="кубик">

@@ -14,7 +14,7 @@ from django.contrib.auth.hashers import make_password
 from django.shortcuts import render
 from django import forms
 
-from .forms import CustomUserCreationForm, CustomUserChangeForm, PakagesForm, ChangeUserForm
+from .forms import CustomUserCreationForm, CustomUserChangeForm, PakagesForm, ChangeUserForm, PakagesEmployeeForm
 # Create your views here.
 
 class HomePageView(TemplateView):
@@ -26,6 +26,22 @@ class ContactPageView(TemplateView):
 
 class ServicesPageView(TemplateView):
     template_name = 'services.html'
+    model = Package
+
+    def get_context_data(self, **kwargs):
+        context = super(ServicesPageView, self).get_context_data(**kwargs)
+        search_id = self.request.GET.get('search_id')
+        if search_id:
+            context['packages'] = Package.objects.filter(id = search_id)
+        else:
+            context['packages'] = Package.objects.none()
+        return context
+            # queryset =queryset.filter(id = search_id)
+        # search_id = self.request.GET.get('search_id')
+        # queryset = Package.objects.all()
+        # if search_id:
+        #     queryset =queryset.filter(id = search_id)
+        # return queryset
 
 class AccountPageView(TemplateView):
     template_name = 'account.html'
@@ -85,6 +101,17 @@ def package_create_view(request):
         form = PakagesForm()
     return render(request, 'package_create.html', {'form': form})
 
+def package_create_employeer_view(request):
+    if request.method == 'POST':
+        form = PakagesEmployeeForm(request.POST)
+        if form.is_valid():
+
+            form.save()
+            return redirect('base')
+    else:
+        form = PakagesEmployeeForm()
+    return render(request, 'package_create_employeer.html', {'form': form})
+
 class CustomUserUpdateView(LoginRequiredMixin, UpdateView):
 
     form_class = ChangeUserForm
@@ -107,11 +134,11 @@ def edit_profile(request):
         form = ChangeUserForm(request.POST, instance=request.user)
         if form.is_valid():
             user = form.save(commit=False)
-            if not form.cleaned_data['password']:
-                user.password = CustomUser.objects.get(pk=user.pk).password
-            else:
-                new_password = form.cleaned_data['password']
-                user.password = make_password(new_password)
+            #if not form.cleaned_data['password']:
+               # user.password = CustomUser.objects.get(pk=user.pk).password
+           # else:
+                #new_password = form.cleaned_data['password']
+                #user.password = make_password(new_password)
             user.save()
             return redirect('home')
     else:
@@ -136,3 +163,6 @@ class ClpersonalPackages(LoginRequiredMixin, ListView):
         user = self.request.user
         packages = Package.objects.filter(client_id=user)
         return render(self.request, 'mypackages.html', {'user': user, 'packages': packages})
+
+
+

@@ -10,25 +10,36 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.hashers import make_password, is_password_usable
 
 
-class Role(models.Model):
-    name = models.CharField(max_length=100, verbose_name='Наименование')
-    def __str__(self):
-        return self.name
+# class Role(models.Model):
+#     name = models.CharField(max_length=100, verbose_name='Наименование')
+#     def __str__(self):
+#         return self.name
 
-    class Meta:
-        verbose_name = "Роль"
-        verbose_name_plural = "Роли"
+    # class Meta:
+    #     verbose_name = "Роль"
+    #     verbose_name_plural = "Роли"
 
 class CustomUser(AbstractUser):
+
+    ROLE_CHOICES = [
+        ('Клиент', 'Клиент'),
+        ('Сотрудник', 'Сотрудник'),
+        ('Водитель', 'Водитель'),
+        ('Администратор', 'Администратор'),
+
+    ]
     first_name = models.CharField(max_length=50, verbose_name='Имя', null=True)
     last_name = models.CharField(max_length=50, verbose_name='Фамилия', null=True)
     patronymic = models.CharField(max_length=50, verbose_name='Отчество', null=True)
     phone_number = models.CharField(max_length=11, verbose_name='Номер телефона', null=True)
     passport = models.CharField(max_length=10, verbose_name='Серия номер паспорта', unique=True, null=True)
     date_of_birth = models.DateField(verbose_name='Дата рождения', null=True)
-    role_id = models.ForeignKey('Role', on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Роль')
+    role = models.CharField(max_length=200,
+                              choices=ROLE_CHOICES,
+                              default='Клиент',
+                              verbose_name='Роль')
     def __str__(self):
-        return "Логин:  " + self.username + " Роль: " + str(self.role_id)
+        return "Логин:  " + self.username + " Роль: " + str(self.role)
 
     class Meta:
         verbose_name = "Пользователя"
@@ -36,9 +47,10 @@ class CustomUser(AbstractUser):
 
     def save(self, *args, **kwargs):
 
-        if self.role_id is None and not self.is_superuser:
-            user_role, created = Role.objects.get_or_create(name='Клиент')
-            self.role_id = user_role
+        if self.role is None and not self.is_superuser:
+            self.role = "Клиент"
+        elif self.is_superuser:
+            self.role = "Администратор"
         super().save(*args, **kwargs)
 
 class CargoCategory(models.Model):
@@ -70,11 +82,21 @@ class Warehouse(models.Model):
         verbose_name_plural = "Склады"
 
 class Car(models.Model):
+    STATUS_CHOICES = [
+        ('На базе', 'На базе'),
+        ('Назначен водитель', 'Назначен водитель'),
+        ('Ремонт', 'Ремонт'),
+        ('Списана', 'Списана'),
+
+    ]
     vin = models.CharField(max_length=17, verbose_name='VIN', unique=True)
     state_number = models.CharField(max_length=9, verbose_name='Гос.номер')
     stamp = models.CharField(max_length=200, verbose_name='Марка')
     model = models.CharField(max_length=200, verbose_name='Модель')
-    status = models.CharField(max_length=200, verbose_name='Статус')
+    status = models.CharField(max_length=200,
+                              choices=STATUS_CHOICES,
+                              default='На базе',
+                              verbose_name='Статус')
     driver_id = models.ForeignKey(settings.AUTH_USER_MODEL,
                                   #limit_choices_to={'post__name': "Сотрудник"},
                                   on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Водитель')
@@ -109,6 +131,19 @@ class PointIssue(models.Model):
 
 
 class Package(models.Model):
+    STATUS_CHOICES = [
+        ('Принят от клиента', 'Принят от клиента'),
+        ('Отправлен на склад', 'Отправлен на склад'),
+        ('Отправлен на склад в город назначения', 'Отправлен на склад в город назначения'),
+        ('Принят на складе в городе назначения', 'Принят на складе в городе назначения'),
+        ('Отправлен в пункт выдачи', 'Отправлен в пункт выдачи'),
+        ('Принят в пункте выдачи', 'Принят в пункте выдачи'),
+        ('Утерян', 'Утерян'),
+        ('Заявка на перевозку', 'Заявка на перевозку'),
+        ('Утилизирован', 'Утилизирован'),
+        ('Выдан', 'Выдан'),
+    ]
+
     client_id = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
@@ -144,12 +179,16 @@ class Package(models.Model):
         related_name='Packages_as_employee',
         verbose_name='Сотрудник',
         # limit_choices_to={'Role__name': "Сотрудник"},
-        null=True
+        null=True,
+        blank=True
     )
     cost = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Стоимость доставки')
     cargo_category = models.ForeignKey('CargoCategory', on_delete=models.SET_NULL, null=True,
                                          verbose_name='Категория груза')
-    status = models.CharField(max_length=200, verbose_name='Статус')
+    status = models.CharField(max_length=200,
+                              choices=STATUS_CHOICES,
+                              default='Заявка на перевозку',
+                              verbose_name='Статус')
     car_id = models.ForeignKey('Car', on_delete=models.SET_NULL, null=True, blank=True,
                                        verbose_name='Номер Машины')
 

@@ -43,7 +43,10 @@
                     <h3>E-mail</h3>
                     <p>{{user.email}}</p>
                 </div>
+                <div>
+                 <a class="chenge-bottom" href="{% url 'password_change' %}">Изменить пароль</a>
                 <a class="chenge-bottom" href="{%url 'account_edit'%}" type="submit">Изменить данные</a>
+            </div>
             </div>
         </div>
         <div class="command">
