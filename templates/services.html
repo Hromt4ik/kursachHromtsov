@@ -14,19 +14,18 @@
               <form  method="get" action="{% url 'services' %}">
                   {% csrf_token %}
                   <div class="serv-1">
-            <input  class="check" type="text" name="tracking_number">
+            <input placeholder="Введите номер посылки"  class="check" type="text" name="tracking_number">
             <button class="check-bottom" type="submit" name="search_id">Отследить</button>
                   </div>
               </form>
+          </div>
+          <div class="results">
               {% if package %}
             <p>Номер посылки: {{ package.id }}</p>
             <p>Статус: {{ package.status }}</p>
             {% else %}
                 <img class="boxquestion" src="{% static "image/boxquestion.png" %}" alt="кубик">
-            {% endif %}
-
-          </div>
-          <div class="results"></div>
+            {% endif %}</div>
 
       </div>
       <div class="serv">

@@ -7,15 +7,16 @@
     <div class="container">
         <h2 style="text-align: center; margin-bottom: 20px;">Посылки</h2>
 
- <form method="get">
+ <form class="filter-form" method="get">
             {{ filter_form.as_p }}
-            <button type="submit">Filter</button>
+            <button class="filter-button" type="submit">Отсортировать</button>
         </form>
 
-  </div>
-     <table class="">
-        <thead>
-        <tr>
+
+    <div class="scroll-1">
+     <table>
+        <thead >
+        <tr class="tr-1">
             <th>Номер</th>
             <th>Клиент</th>
             <th>Комментарии</th>
@@ -37,7 +38,7 @@
     </thead>
     <tbody>
         {% for p in object_list %}
-        <tr>
+        <tr class="tr-1">
             <td>{{ p.id }}</td>
             <td>{{ p.client_id }}</td>
             <td>{{ p.comments }}</td>
@@ -55,12 +56,13 @@
             <td>{{ p.status }}</td>
             <td>{{ p.car_id }}</td>
             <td>
-                <a href="#">Подробнее</a> |
                 <a href="{% url 'edit_package' package_id=p.id %}" class="edit-link">Редактировать</a>
             </td>
         </tr>
             {% endfor %}
         </tbody>
     </table>
+        </div>
+          </div>
 </main>
 {% endblock %}

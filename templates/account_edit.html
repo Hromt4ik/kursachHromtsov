@@ -9,6 +9,13 @@
         <form action="" method="post" class="form-user-edit">
             {% csrf_token %}
             {{ form.as_p }}
+                    <script>
+                $(document).ready(function() {
+                    $('#id_phone_number').mask('99999999999');
+                    $('#id_passport').mask('9999999999');
+                });
+        </script>
+
             <input id="user-edit-button" type="submit" value="Изменить" />
         </form>
   </div>

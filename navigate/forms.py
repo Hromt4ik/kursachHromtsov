@@ -103,6 +103,11 @@ class ChangeUserForm(forms.ModelForm):
         model = CustomUser
         fields = ('first_name', 'last_name', 'patronymic', 'phone_number', 'email', 'passport', 'date_of_birth',
                    'username')
+        widgets = {
+            'date_of_birth': forms.DateTimeInput(attrs={'type': 'date', 'required': 'required'},
+                                                   format='%Y-%m-%d'),
+
+        }
 
 class PackageEditForm(forms.ModelForm):
     class Meta:
@@ -117,16 +122,17 @@ class PackageEditForm(forms.ModelForm):
 
 class PackageFilterForm(forms.Form):
     status_choices = [('', 'Все статусы')] + list(Package.STATUS_CHOICES)
-    status = forms.ChoiceField(choices=status_choices, required=False)
-    sending_address = forms.ModelChoiceField(queryset=PointIssue.objects.all(), required=False)
-    delivery_address = forms.ModelChoiceField(queryset=PointIssue.objects.all(), required=False)
-    date_of_issue = forms.DateField(required=False, widget=forms.DateInput(attrs={'type': 'date'}))
-    delivery_date = forms.DateField(required=False, widget=forms.DateInput(attrs={'type': 'date'}))
-    date_of_receipt = forms.DateField(required=False, widget=forms.DateInput(attrs={'type': 'date'}))
-    cargo_category = forms.ModelChoiceField(queryset=CargoCategory.objects.all(), empty_label='Все категории', required=False)
+    status = forms.ChoiceField(label='Статус', choices=status_choices, required=False)
+    sending_address = forms.ModelChoiceField(label='Адрес отправки', queryset=PointIssue.objects.all(), required=False)
+    delivery_address = forms.ModelChoiceField(label='Адрес доставки', queryset=PointIssue.objects.all(), required=False)
+    date_of_issue = forms.DateField(label='Дата отправки', required=False, widget=forms.DateInput(attrs={'type': 'date'}))
+    delivery_date = forms.DateField(label='Дата Доставки', required=False, widget=forms.DateInput(attrs={'type': 'date'}))
+    date_of_receipt = forms.DateField(label='Дата выдачи', required=False, widget=forms.DateInput(attrs={'type': 'date'}))
+    cargo_category = forms.ModelChoiceField(label='Категория', queryset=CargoCategory.objects.all(), empty_label='Все категории', required=False)
     client = forms.ModelChoiceField(
         queryset=CustomUser.objects.filter(role='Клиент'),
         required=False,
-        empty_label="Все клиенты"
+        empty_label="Все клиенты",
+        label = 'Клиент'
     )
     package_id = forms.IntegerField(label='Номер  посылки', required=False)

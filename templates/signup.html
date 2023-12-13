@@ -10,6 +10,14 @@
     <form class="form-sign" method="post">
         {% csrf_token %}
         {{ form.as_p }}
+
+        <script>
+                $(document).ready(function() {
+                     $('#id_phone_number').mask('99999999999');
+                    $('#id_passport').mask('9999999999');
+                    });
+        </script>
+
         <button class="sign-up" type="submit">Зарегистрироваться</button>
     </form>
     </div>
