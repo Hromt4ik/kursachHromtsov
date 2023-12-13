@@ -53,9 +53,17 @@
             <a href="{%url 'home'%}">
                 <img src="{% static "image/logo.png" %}" alt="лого" height="70" width="70">
             </a>
-            <ul class="nav-list">
+             <ul class="nav-list">
+               {% if user.role == 'Клиент' or  not user.is_authenticated %}
                 <li class="nav-list-item"><a href="{%url 'services'%}" style="color: #FFFFFF">Услуги</a></li>
                 <li class="nav-list-item"><a href="{%url 'contact'%}" style="color: #FFFFFF">Контакты</a></li>
+                    {%if user.is_authenticated %}
+                        <li class="nav-list-item"><a href="{%url 'mypakeges'%}" style="color: #FFFFFF">Мои посылки</a></li>
+                    {% endif %}
+                {% elif user.role == 'Сотрудник' or user.role == 'Администратор' %}
+                <li class="nav-list-item"><a href="{%url 'employeerpakages'%}" style="color: #FFFFFF">Посылки</a></li>
+                <li class="nav-list-item"><a href="{%url 'createPakagesEmployeer'%}" style="color: #FFFFFF">Создать Посылку</a></li>
+                {% endif %}
             </ul>
             <p class="copiright">&copy; "Быстрее света" 2023</p>
         </div>

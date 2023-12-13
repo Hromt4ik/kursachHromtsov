@@ -6,10 +6,61 @@
 <main>
     <div class="container">
         <h2 style="text-align: center; margin-bottom: 20px;">Посылки</h2>
-        <form action="" method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
+
+ <form method="get">
+            {{ filter_form.as_p }}
+            <button type="submit">Filter</button>
         </form>
+
   </div>
+     <table class="">
+        <thead>
+        <tr>
+            <th>Номер</th>
+            <th>Клиент</th>
+            <th>Комментарии</th>
+            <th>Адрес отправки</th>
+            <th>Адрес доставки</th>
+            <th>Вес (кг)</th>
+            <th>Дата отправки</th>
+            <th>Дата доставки в пункт выдачи</th>
+            <th>Дата выдачи</th>
+            <th>Длина (м)</th>
+            <th>Высота (м)</th>
+            <th>Ширина (м)</th>
+            <th>Стоимость доставки</th>
+            <th>Категория груза</th>
+            <th>Статус</th>
+            <th>Номер Машины</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in object_list %}
+        <tr>
+            <td>{{ p.id }}</td>
+            <td>{{ p.client_id }}</td>
+            <td>{{ p.comments }}</td>
+            <td>{{ p.sending_address }}</td>
+            <td>{{ p.delivery_address }}</td>
+            <td>{{ p.weight }}</td>
+            <td>{{ p.date_of_receipt }}</td>
+            <td>{{ p.delivery_date }}</td>
+            <td>{{ p.date_of_issue }}</td>
+            <td>{{ p.length }}</td>
+            <td>{{ p.height }}</td>
+            <td>{{ p.width }}</td>
+            <td>{{ p.cost }}</td>
+            <td>{{ p.cargo_category }}</td>
+            <td>{{ p.status }}</td>
+            <td>{{ p.car_id }}</td>
+            <td>
+                <a href="#">Подробнее</a> |
+                <a href="{% url 'edit_package' package_id=p.id %}" class="edit-link">Редактировать</a>
+            </td>
+        </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </main>
 {% endblock %}

@@ -49,13 +49,23 @@ document.getElementById("calculate").addEventListener("click", function(e){
     var width = parseFloat(document.getElementById("id_width").value);
     var length = parseFloat(document.getElementById("id_length").value);
     var height = parseFloat(document.getElementById("id_height").value);
+    var cargoCategoryId = document.getElementById("id_cargo_category").value;
+var cargoCategoryDropdown = document.getElementById("id_cargo_category");
+
     // Проверяем, являются ли вес и ширина числами
     if (isNaN(weight) || isNaN(width)|| isNaN(length)|| isNaN(height) ||
      weight <= 0 || width <= 0|| length <= 0 || height <= 0) {
       alert("Пожалуйста, введите действительные числовые значения для веса и размера посылки.");
     } else {
-      // Расчет стоимости
-      var cost = weight * width * length * height * 50;
+      var selectedOption = cargoCategoryDropdown.options[cargoCategoryDropdown.selectedIndex];
+        var optionText = selectedOption.text;
+        var coefficientIndex = optionText.indexOf("коэф:") + 5; // 5 is the length of "коэф:"
+        var coefficientString = optionText.substring(coefficientIndex).trim();
+        var cargoCoefficient = parseFloat(coefficientString);
+
+      console.log("Selected Option: " + selectedOption);
+      console.log("Height: " + cargoCoefficient);
+      var cost = weight * width * length * height * 50 * cargoCoefficient;
       document.getElementById("id_cost").value = Math.ceil(cost);
     }
   });

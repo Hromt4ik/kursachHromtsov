@@ -39,8 +39,10 @@ class CustomUser(AbstractUser):
                               default='Клиент',
                               verbose_name='Роль')
     def __str__(self):
-        return "Логин:  " + self.username + " Роль: " + str(self.role)
-
+        if(self.role == 'Клиент'):
+            return "Логин:  " + self.username + " Роль: " + str(self.role)  + " Паспорт: " + str(self.passport)
+        else:
+            return "Логин:  " + self.username + " Роль: " + str(self.role)
     class Meta:
         verbose_name = "Пользователя"
         verbose_name_plural = "Пользователи"
@@ -59,7 +61,7 @@ class CargoCategory(models.Model):
     comments = models.CharField(max_length=500, verbose_name='Комментарии', null=True, blank=True)
 
     def __str__(self):
-        return self.name + " ( " + self.comments + " )"
+        return f"{self.name} ({self.comments})  коэф:{self.coefficient}"
 
     class Meta:
         verbose_name = "Категорию"
@@ -173,15 +175,15 @@ class Package(models.Model):
     length = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Длина(м)')
     height = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Высота(м)')
     width = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Ширина(м)')
-    employee_id = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.SET_NULL,
-        related_name='Packages_as_employee',
-        verbose_name='Сотрудник',
-        # limit_choices_to={'Role__name': "Сотрудник"},
-        null=True,
-        blank=True
-    )
+    # employee_id = models.ForeignKey(
+    #     settings.AUTH_USER_MODEL,
+    #     on_delete=models.SET_NULL,
+    #     related_name='Packages_as_employee',
+    #     verbose_name='Сотрудник',
+    #     # limit_choices_to={'Role__name': "Сотрудник"},
+    #     null=True,
+    #     blank=True
+    # )
     cost = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Стоимость доставки')
     cargo_category = models.ForeignKey('CargoCategory', on_delete=models.SET_NULL, null=True,
                                          verbose_name='Категория груза')

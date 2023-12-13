@@ -13,8 +13,8 @@ from . import models
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import render
 from django import forms
-
-from .forms import CustomUserCreationForm, CustomUserChangeForm, PakagesForm, ChangeUserForm, PakagesEmployeeForm
+from django.contrib.auth.decorators import login_required
+from .forms import CustomUserCreationForm, CustomUserChangeForm,PackageFilterForm, PakagesForm, ChangeUserForm, PakagesEmployeeForm, PackageEditForm
 # Create your views here.
 
 class HomePageView(TemplateView):
@@ -26,35 +26,35 @@ class ContactPageView(TemplateView):
 
 class ServicesPageView(TemplateView):
     template_name = 'services.html'
-    model = Package
 
     def get_context_data(self, **kwargs):
-        context = super(ServicesPageView, self).get_context_data(**kwargs)
-        search_id = self.request.GET.get('search_id')
-        if search_id:
-            context['packages'] = Package.objects.filter(id = search_id)
-        else:
-            context['packages'] = Package.objects.none()
+        context = super().get_context_data(**kwargs)
+        tracking_number = self.request.GET.get('tracking_number', '')
+
+        if tracking_number:
+            try:
+                tracking_number = int(tracking_number)
+                package = Package.objects.filter(id=tracking_number).first()
+                if package:
+                    context['package'] = package
+                else:
+                    context['error'] = 'Посылка с таким номером не найдена.'
+            except ValueError:
+                context['error'] = 'Некорректный номер посылки.'
         return context
-            # queryset =queryset.filter(id = search_id)
-        # search_id = self.request.GET.get('search_id')
-        # queryset = Package.objects.all()
-        # if search_id:
-        #     queryset =queryset.filter(id = search_id)
-        # return queryset
 
 class AccountPageView(TemplateView):
     template_name = 'account.html'
 
-def package_create_view(request):
-    if request.method == 'POST':
-        form = PakagesForm(request.POST)
-        if form.is_valid():
-            Package.client_id = request.CustomUser
-            form.save()
-    else:
-        form = PakagesForm()
-    return render(request, 'mypakages.html')
+# def package_create_view(request):
+#     if request.method == 'POST':
+#         form = PakagesForm(request.POST)
+#         if form.is_valid():
+#             Package.client_id = request.CustomUser
+#             form.save()
+#     else:
+#         form = PakagesForm()
+#     return render(request, 'mypakages.html')
 
 def personalAccView(request):
     # Получаем текущего пользователя
@@ -71,7 +71,36 @@ class MypakegesPageView(TemplateView):
     template_name = 'mypakeges.html'
 
 class EmployeerPakegesPageView(TemplateView):
-        template_name = 'employeerpakages.html'
+    template_name = 'employeerpakages.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        form = PackageFilterForm(self.request.GET or None)
+
+        queryset = Package.objects.all()
+        if form.is_valid():
+            if form.cleaned_data.get('status'):
+                queryset = queryset.filter(status=form.cleaned_data['status'])
+            if form.cleaned_data.get('sending_address'):
+                queryset = queryset.filter(sending_address=form.cleaned_data['sending_address'])
+            if form.cleaned_data.get('delivery_address'):
+                queryset = queryset.filter(delivery_address=form.cleaned_data['delivery_address'])
+            if form.cleaned_data.get('date_of_issue'):
+                queryset = queryset.filter(date_of_issue=form.cleaned_data['date_of_issue'])
+            if form.cleaned_data.get('delivery_date'):
+                queryset = queryset.filter(delivery_date=form.cleaned_data['delivery_date'])
+            if form.cleaned_data.get('date_of_receipt'):
+                queryset = queryset.filter(date_of_receipt=form.cleaned_data['date_of_receipt'])
+            if form.cleaned_data.get('cargo_category'):
+                queryset = queryset.filter(cargo_category=form.cleaned_data['cargo_category'])
+            if form.cleaned_data.get('client'):
+                queryset = queryset.filter(client_id=form.cleaned_data['client'])
+            if form.cleaned_data.get('package_id'):
+                queryset = queryset.filter(id=form.cleaned_data['package_id'])
+
+        context['object_list'] = queryset
+        context['filter_form'] = form
+        return context
 class SignUp(CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('login')
@@ -90,12 +119,14 @@ def package_detail(request):
 
     return JsonResponse({'message': 'Введите ID посылки'})
 
+@login_required
 def package_create_view(request):
     if request.method == 'POST':
         form = PakagesForm(request.POST)
         if form.is_valid():
-            Package.Packages_as_client = request.user
-            form.save()
+            package = form.save(commit=False)
+            package.client_id = request.user
+            package.save()
             return redirect('mypakeges')
     else:
         form = PakagesForm()
@@ -134,35 +165,42 @@ def edit_profile(request):
         form = ChangeUserForm(request.POST, instance=request.user)
         if form.is_valid():
             user = form.save(commit=False)
-            #if not form.cleaned_data['password']:
-               # user.password = CustomUser.objects.get(pk=user.pk).password
-           # else:
-                #new_password = form.cleaned_data['password']
-                #user.password = make_password(new_password)
+
             user.save()
             return redirect('home')
     else:
         form = ChangeUserForm(instance=request.user)
 
     return render(request, 'account_edit.html', {'form': form})
-
+@login_required
 def personalPackages(request):
     user = request.user
     if user.is_authenticated and not user.is_anonymous:
         packages = Package.objects.filter(client_id = user)
-        return render(request, 'mypakeges.html', {'user': user, 'packeges': packages})
+        return render(request, 'mypakeges.html', {'user': user, 'packages': packages})
     else:
         return redirect('login')
 
-class ClpersonalPackages(LoginRequiredMixin, ListView):
-    model = Package
-    template_name = 'mypakeges.html'
-    login_url = 'login'
+# class ClpersonalPackages(LoginRequiredMixin, ListView):
+#     model = Package
+#     template_name = 'mypakeges.html'
+#     login_url = 'login'
+#
+#     def get_form(self, form_class=None):
+#         user = self.request.user
+#         packages = Package.objects.filter(client_id=user)
+#         return render(self.request, 'mypackages.html', {'user': user, 'packages': packages})
 
-    def get_form(self, form_class=None):
-        user = self.request.user
-        packages = Package.objects.filter(client_id=user)
-        return render(self.request, 'mypackages.html', {'user': user, 'packages': packages})
 
+def edit_package(request, package_id):
+    package = get_object_or_404(Package, id=package_id)
 
+    if request.method == 'POST':
+        form = PackageEditForm(request.POST, instance=package)
+        if form.is_valid():
+            form.save()
+            return redirect('employeerpakages')
+    else:
+        form = PackageEditForm(instance=package)
 
+    return render(request, 'edit_package.html', {'form': form})

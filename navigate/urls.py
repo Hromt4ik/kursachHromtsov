@@ -11,5 +11,6 @@ urlpatterns = [
     path('mypakeges/', views.personalPackages, name='mypakeges'),
     path('createPakages/', views.package_create_view, name='createPakages'),
     path('createPakagesEmployeer/', views.package_create_employeer_view, name='createPakagesEmployeer'),
-    path('employeerpakages/', views.EmployeerPakegesPageView.as_view(), name='employeerpakages')
+    path('employeerpakages/', views.EmployeerPakegesPageView.as_view(), name='employeerpakages'),
+    path('employeerpakages/edit/<int:package_id>/', views.edit_package, name='edit_package'),
 ]

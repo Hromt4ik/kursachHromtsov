@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import CustomUser, Package, PointIssue
+from .models import CustomUser, Package, PointIssue, CargoCategory
 from  django.shortcuts import render
 
 
@@ -104,3 +104,29 @@ class ChangeUserForm(forms.ModelForm):
         fields = ('first_name', 'last_name', 'patronymic', 'phone_number', 'email', 'passport', 'date_of_birth',
                    'username')
 
+class PackageEditForm(forms.ModelForm):
+    class Meta:
+        model = Package
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(PackageEditForm, self).__init__(*args, **kwargs)
+        for name, field in self.fields.items():
+            if name not in ['car_id', 'status']:
+                field.disabled = True
+
+class PackageFilterForm(forms.Form):
+    status_choices = [('', 'Все статусы')] + list(Package.STATUS_CHOICES)
+    status = forms.ChoiceField(choices=status_choices, required=False)
+    sending_address = forms.ModelChoiceField(queryset=PointIssue.objects.all(), required=False)
+    delivery_address = forms.ModelChoiceField(queryset=PointIssue.objects.all(), required=False)
+    date_of_issue = forms.DateField(required=False, widget=forms.DateInput(attrs={'type': 'date'}))
+    delivery_date = forms.DateField(required=False, widget=forms.DateInput(attrs={'type': 'date'}))
+    date_of_receipt = forms.DateField(required=False, widget=forms.DateInput(attrs={'type': 'date'}))
+    cargo_category = forms.ModelChoiceField(queryset=CargoCategory.objects.all(), empty_label='Все категории', required=False)
+    client = forms.ModelChoiceField(
+        queryset=CustomUser.objects.filter(role='Клиент'),
+        required=False,
+        empty_label="Все клиенты"
+    )
+    package_id = forms.IntegerField(label='Номер  посылки', required=False)

@@ -11,16 +11,23 @@
           <h3>Отследить Посылку</h3>
           <div class="serv-1">
             <label>Номер посылки:</label>
-              <form method="get">
-            <input class="check" type="text">
+              <form  method="get" action="{% url 'services' %}">
+                  {% csrf_token %}
+                  <div class="serv-1">
+            <input  class="check" type="text" name="tracking_number">
             <button class="check-bottom" type="submit" name="search_id">Отследить</button>
+                  </div>
               </form>
-              {%for p in object_list%}
-              <p> {{p.comments}}</p>
-              {% endfor %}
+              {% if package %}
+            <p>Номер посылки: {{ package.id }}</p>
+            <p>Статус: {{ package.status }}</p>
+            {% else %}
+                <img class="boxquestion" src="{% static "image/boxquestion.png" %}" alt="кубик">
+            {% endif %}
+
           </div>
           <div class="results"></div>
-          <img class="boxquestion" src="{% static "image/boxquestion.png" %}" alt="кубик">
+
       </div>
       <div class="serv">
           <a class="list-bottom" href="{% url 'createPakages'%}">Расчитать стоимость и создать заявку на перевозку</a>
@@ -28,19 +35,18 @@
       </div>
   </div>
 </main>
-<script>
-document.querySelector('.check-bottom').addEventListener('click', function(e) {
-    e.preventDefault();
-    var packageId = document.querySelector('.check').value;
-    fetch(/path-to-your-view/?id=${packageId})
-        .then(response => response.json())
-        .then(data => {
-             let content =
-        <p>Вес: ${data.weight}</p>
-    ;
-            document.querySelector('.results').innerHTML = data.message;
-        })
-        .catch(error => console.log(error));
-});
-</script>
+<!--<script>-->
+<!--document.querySelector('.check-bottom').addEventListener('click', function(e) {-->
+<!--    e.preventDefault();-->
+<!--    var packageId = document.querySelector('.check').value;-->
+<!--    fetch(/path-to-your-view/?id=${packageId})-->
+<!--        .then(response => response.json())-->
+<!--        .then(data => {-->
+<!--             let content =-->
+<!--        <p>Вес: ${data.weight}</p>;-->
+<!--            document.querySelector('.results').innerHTML = data.message;-->
+<!--        })-->
+<!--        .catch(error => console.log(error));-->
+<!--});-->
+<!--</script>-->
 {% endblock %}
