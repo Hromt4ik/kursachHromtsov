@@ -1,29 +1,32 @@
 {% extends 'base.html' %}
-
+{% block title %}Редактирование Посылки{% endblock title %}
 {% block content %}
 <main>
-  <h1 class="mb-4">Редактирование Посылки</h1>
-  <form method="post">
-    {% csrf_token %}
-    <fieldset>
-      {% for field in form %}
-        <div class="mb-3">
-          <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-          {% if field.name in form.Meta.readonly_fields %}
-            <input type="text" class="form-control" id="{{ field.id_for_label }}" value="{{ field.value }}" disabled>
-          {% else %}
-            {{ field }}
-          {% endif %}
-          {% if field.help_text %}
-            <div class="form-text">{{ field.help_text }}</div>
-          {% endif %}
-          {% for error in field.errors %}
-            <div class="alert alert-danger">{{ error }}</div>
-          {% endfor %}
-        </div>
-      {% endfor %}
-    </fieldset>
-    <button type="submit" class="btn btn-primary">Сохранить</button>
-  </form>
+    <div class="container">
+        <h1 class="mb-4">Редактирование Посылки</h1>
+        <form method="post" class="form-edit-pakage">
+            {% csrf_token %}
+            <fieldset class="form-edit-pakage-1">
+                {% for field in form %}
+                <div class="mb">
+                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                    {% if field.name in form.Meta.readonly_fields %}
+                    <input type="text" class="form-control" id="{{ field.id_for_label }}" value="{{ field.value }}"
+                           disabled>
+                    {% else %}
+                    {{ field }}
+                    {% endif %}
+                    {% if field.help_text %}
+                    <div class="form-text">{{ field.help_text }}</div>
+                    {% endif %}
+                    {% for error in field.errors %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </fieldset>
+            <button type="submit" class="edit_p_button">Сохранить</button>
+        </form>
+    </div>
 </main>
 {% endblock %}

@@ -1,6 +1,13 @@
 
 /* Reset and base styles  */
-
+* {
+    color: black;
+	padding: 0px;
+	margin: 0px;
+	border: none;
+    font-size: 26px;
+    font-family: Arial, Helvetica, sans-serif;
+}
 
 *,
 *::before,
@@ -106,10 +113,10 @@ header{
 }
 
 .nav-list{
-
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    margin: 0;
 }
 
 .nav-list-item{
@@ -158,206 +165,23 @@ h1{
     justify-content: flex-start;
     align-items: center;
     flex-direction: row;
-    margin-bottom: 20px;
+
 }
 
 
 .gaz{
     display: block;
-    margin-left: auto;
-    margin-right: auto
-}
-
-.img-phone{
-    display: flex;
-    justify-content: center;
-}
-
-
-/* Reset and base styles  */
-* {
-    color: black;
-	padding: 0px;
-	margin: 0px;
-	border: none;
-    font-size: 26px;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-*,
-*::before,
-*::after {
-	box-sizing: border-box;
-}
-
-/* Links */
-
-a, a:link, a:visited  {
-    text-decoration: none;
-}
-
-a:hover  {
-    text-decoration: none;
-}
-
-/* Common */
-
-aside, nav, footer, header, section, main {
-	display: block;
-}
-
-h1, h2, h3, h4, h5, h6, p {
-    font-size: inherit;
-	font-weight: inherit;
-}
-
-ul, ul li {
-	list-style: none;
-}
-
-img {
-	vertical-align: top;
-}
-
-img, svg {
-	max-width: 100%;
-	height: auto;
-}
-
-address {
-  font-style: normal;
-}
-
-/* Form */
-
-input, textarea, button, select {
-	font-family: inherit;
-    font-size: inherit;
-    color: inherit;
-    background-color: transparent;
-}
-
-input::-ms-clear {
-	display: none;
-}
-
-button, input[type="submit"] {
-    display: inline-block;
-    box-shadow: none;
-    background-color: transparent;
-    background: none;
-    cursor: pointer;
-}
-
-input:focus, input:active,
-button:focus, button:active {
-    outline: none;
-}
-
-button::-moz-focus-inner {
-	padding: 0;
-	border: 0;
-}
-
-label {
-	cursor: pointer;
-}
-
-legend {
-	display: block;
-}
-
-.container{
-    width: 1170px;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 16px;
-    padding-right: 16px;
-    margin-bottom: 0;
-    margin-top: 0;
-}
-
-header{
-    padding: 10px 0px;
-    background-color: #006382;
-}
-
-body{
-     min-width: 1170px;
-}
-
-.header-nav{
-    display: flex;
-    justify-content: flex-start;
-}
-
-.nav-list{
-
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-}
-
-.nav-list-item{
-    margin-top: 10px;
-    margin-left: 25px;
-    color: white;
-}
-
-.signin{
-    display: flex;
-    align-items: center;
-    margin-left: auto;
-}
-
-footer{
-    margin: 0;
-    background-color: #006382;
-    padding: 10px 0;
-}
-
-.copiright{
-    color: white;
-    display: flex;
-    align-items: center;
-    margin-left: auto;
-    font-size: 14px;
-    margin-top: 15px;
-}
-
-main{
-    min-height: 90vh;
-    padding-top: 40px;
-    padding-bottom: 40px;
-    box-shadow: inset 0px 0px 40px rgba(0, 99, 130, 0.8);
-}
-
-h1{
-    font-size: 50px;
-    padding:  10px;
-    text-align: center;
-}
-
-
-.p-main{
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    flex-direction: row;
-    margin-bottom: 20px;
-}
-
-
-.gaz{
-    display: block;
-    margin-left: auto;
-    margin-right: auto
+     margin-bottom: 200px;
+     height: 350px;
 }
 
 .img-phone{
     display: flex;
     justify-content: center;
 }
+
 
 h2{
     font-size: 32px;
@@ -367,7 +191,8 @@ h2{
 }
 
 
-.form-sign > p, .form-change-pass > p, .form-login > p, .create-pakeges > p, .form-user-edit > p, .form-reset-pass > p{
+.form-sign > p, .form-change-pass > p, .form-login > p, .create-pakeges > p,
+ .form-user-edit > p, .form-reset-pass > p, .form-edit-pakage  .mb{
     display: flex;
     flex-wrap: wrap;
     align-item: center;
@@ -387,7 +212,10 @@ h2{
     margin-right: 3%;
 }
 
-.form-sign > p > label, .filter-form > p > label, .form-reset-pass > p > label, .form-change-pass > p > label, .form-login > p > label,  .create-pakeges > p > label, .form-user-edit > p > label{
+.form-sign > p > label, .filter-form > p > label, .form-reset-pass > p > label,
+.form-change-pass > p > label, .form-login > p > label,
+.create-pakeges > p > label, .form-user-edit > p > label,
+.form-edit-pakage  .mb > label {
     display: flex;
     text-align: center;
     justify-content: start;
@@ -397,7 +225,8 @@ h2{
 
 
 .form-sign > p > input, .form-reset-pass > p > input, .form-change-pass > p > input, .form-login > p > input, .form-user-edit > p > input,
-.create-pakeges > p > input, .create-pakeges > p > select, .filter-form > p > select, .filter-form > p > input
+.create-pakeges > p > input, .create-pakeges > p > select, .filter-form > p > select, .filter-form > p > input,
+.form-edit-pakage  .mb > input, .form-edit-pakage  .mb > select
 {
     border: 1px solid #006382;
     border-radius: 10px;
@@ -677,7 +506,8 @@ text-align: start;
 	box-shadow: inset 0 0 0 3px #006382;
 }
 
-.create-pakeges, .form-sign ,.form-reset-pass, .form-login , .form-user-edit, .form-change-pass {
+.create-pakeges, .form-sign ,.form-reset-pass, .form-login , .form-user-edit, .form-change-pass,
+.form-edit-pakage{
     border: 3px solid #006382;
     border-radius: 10px;
     padding: 20px;
@@ -723,8 +553,9 @@ text-align: start;
 
 
 .form-sign > p > input:focus, .form-reset-pass > p > input:focus, .form-login > p > input:focus, .create-pakeges > p > input:focus,
- .create-pakeges > p > select:focus, .form-user-edit > p > input:focus, .form-change-pass > p > input:focus, .filter-form > p > select:focus,
- .filter-form > p > input:focus{
+ .create-pakeges > p > select:focus, .form-user-edit > p > input:focus,
+ .form-change-pass > p > input:focus, .filter-form > p > select:focus,
+.form-edit-pakage  .mb > input:focus, .form-edit-pakage  .mb > select:focus{
 
 -webkit-box-shadow: 0px 5px 50px -1px rgba(0, 99, 130, 0.8);
 -moz-box-shadow: 0px 5px 50px -1px rgba(0, 99, 130, 0.8);
@@ -734,9 +565,16 @@ box-shadow: 0px 5px 50px -1px rgba(0, 99, 130, 0.8);
 .errorlist > li{
     color: red;
     font-size: 20px;
+    list-style: none !important;
 }
 
-.sign-up, .login, .login-after-change, #change-pass-button, #user-edit-button, #reset-pass-buttom {
+.errorlist{
+    margin: 0;
+    padding: 0;
+}
+
+.sign-up, .login, .login-after-change, #change-pass-button, #user-edit-button, #reset-pass-buttom,
+.edit_p_button{
     color: white;
     background-color: #006382;
     padding: 10px;
@@ -748,14 +586,14 @@ box-shadow: 0px 5px 50px -1px rgba(0, 99, 130, 0.8);
    margin-top: 30px;
 }
 
-.sign-up:hover, .forgot-pass:hover, .login:hover, .login-after-change:hover, #change-pass-button:hover, #user-edit-button:hover, #reset-pass-buttom:hover {
+.sign-up:hover, .edit_p_button:hover, .forgot-pass:hover, .login:hover, .login-after-change:hover, #change-pass-button:hover, #user-edit-button:hover, #reset-pass-buttom:hover {
 	background: rgba(0,0,0,0);
 	color: #006382;
 	box-shadow: inset 0 0 0 3px #006382;
 }
 
 .forgot-pass{
-
+    color: black;
 }
 
 .after-change{
@@ -764,7 +602,7 @@ margin-bottom: 20px;
 
 .scroll-1{
     overflow: auto;
-    margin: 0 20px;
+    margin: 0;
 }
 
 
@@ -778,6 +616,8 @@ margin-bottom: 20px;
     max-height: 50px;
     text-align: center;
     align-items: center;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .edit-link:hover{
@@ -797,16 +637,15 @@ margin-bottom: 20px;
 
 .tr-1  td{
     text-align: center;
-
-}
-
-td {
- margin-top: 20px;
+     margin-top: 20px;
  border: 1px solid #006382;
+
 }
 
-th{
+.tr-1 th{
     border: 3px solid #006382;
+    text-align:center;
+    padding: 0 20px;
 }
 
 .finde-pakage{
@@ -823,7 +662,7 @@ align-item:
     max-width : 45%;
 }
 
-.str-find > h3{
+.str-find > h4{
 border-bottom: 3px solid #006382;
 font-weight: 700;
 }
@@ -837,4 +676,8 @@ font-weight: 700;
 table{
     margin-top: 50px;
     border-collapse: collapse;
+}
+
+.results{
+    margin: 40px 0;
 }

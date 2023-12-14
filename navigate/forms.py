@@ -115,10 +115,18 @@ class PackageEditForm(forms.ModelForm):
         model = Package
         fields = '__all__'
 
+        widgets = {
+            'delivery_date': forms.DateTimeInput(attrs={'type': 'date'},
+                                                 format='%Y-%m-%d'),
+            'date_of_issue': forms.DateTimeInput(attrs={'type': 'date'},
+                                                 format='%Y-%m-%d'),
+
+        }
+
     def __init__(self, *args, **kwargs):
         super(PackageEditForm, self).__init__(*args, **kwargs)
         for name, field in self.fields.items():
-            if name not in ['car_id', 'status']:
+            if name not in ['car_id', 'status', 'delivery_date', 'date_of_issue']:
                 field.disabled = True
 
 class PackageFilterForm(forms.Form):
@@ -126,9 +134,9 @@ class PackageFilterForm(forms.Form):
     status = forms.ChoiceField(label='Статус', choices=status_choices, required=False)
     sending_address = forms.ModelChoiceField(label='Адрес отправки', queryset=PointIssue.objects.all(), required=False)
     delivery_address = forms.ModelChoiceField(label='Адрес доставки', queryset=PointIssue.objects.all(), required=False)
-    date_of_issue = forms.DateField(label='Дата отправки', required=False, widget=forms.DateInput(attrs={'type': 'date'}))
+    date_of_receipt = forms.DateField(label='Дата отправки', required=False, widget=forms.DateInput(attrs={'type': 'date'}))
     delivery_date = forms.DateField(label='Дата Доставки', required=False, widget=forms.DateInput(attrs={'type': 'date'}))
-    date_of_receipt = forms.DateField(label='Дата выдачи', required=False, widget=forms.DateInput(attrs={'type': 'date'}))
+    date_of_issue = forms.DateField(label='Дата выдачи', required=False, widget=forms.DateInput(attrs={'type': 'date'}))
     cargo_category = forms.ModelChoiceField(label='Категория', queryset=CargoCategory.objects.all(), empty_label='Все категории', required=False)
     client = forms.ModelChoiceField(
         queryset=CustomUser.objects.filter(role='Клиент'),

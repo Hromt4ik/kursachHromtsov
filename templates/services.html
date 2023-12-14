@@ -24,33 +24,38 @@
               <h2>Посылка Найдена</h2>
              <div class="finde-pakage">
                  <div class="str-find">
-                     <h3>Номер посылки</h3>
+                     <h4>Номер посылки</h4>
                      <p>{{ package.id }}</p>
                  </div>
                  <div class="str-find">
-                     <h3>Статус</h3>
+                     <h4>Статус</h4>
                      <p>{{ package.status }}</p>
                  </div>
                  <div class="str-find">
-                     <h3>Адрес отправки</h3>
+                     <h4>Адрес отправки</h4>
                      <p>{{ package.sending_address }}</p>
                  </div>
                  <div class="str-find">
-                     <h3>Адрес доставки</h3>
+                     <h4>Адрес доставки</h4>
                      <p>{{ package.delivery_address }}</p>
                  </div>
                  <div class="str-find">
-                     <h3>Вес(кг)</h3>
+                     <h4>Вес(кг)</h4>
                      <p>{{ package.weight }}</p>
                  </div>
                  <div class="str-find">
-                     <h3>Дата отправкии</h3>
+                     <h4>Категория</h4>
+                     <p>{{ package.cargo_category }}</p>
+                 </div>
+                 <div class="str-find">
+                     <h4>Дата отправкии</h4>
                      <p>{{ package.date_of_receipt }}</p>
                  </div>
                  <div class="str-find">
-                     <h3>Дата доставки в пункт выдачи</h3>
-                     <p>{{ package.delivery_date }}</p>
+                     <h4>Дата выдачи</h4>
+                     <p>{{ package.date_of_issue }}</p>
                  </div>
+
 
              </div>
             {% else %}

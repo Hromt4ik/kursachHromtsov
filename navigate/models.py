@@ -1,13 +1,12 @@
 from django.db import models
 from django.urls import reverse
 from django.core.exceptions import ValidationError
-from django.core.validators import MinValueValidator, MaxValueValidator, MaxLengthValidator, MinLengthValidator, RegexValidator
-from decimal import Decimal
+from datetime import date
 from django.utils import timezone
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.hashers import make_password, is_password_usable
+
 
 
 # class Role(models.Model):
@@ -54,6 +53,26 @@ class CustomUser(AbstractUser):
         elif self.is_superuser:
             self.role = "Администратор"
         super().save(*args, **kwargs)
+
+    def clean(self):
+
+        if self.date_of_birth:
+            today = date.today()
+            age = today.year - self.date_of_birth.year - (
+                    (today.month, today.day) < (self.date_of_birth.month, self.date_of_birth.day))
+
+            if age < 14:
+                raise ValidationError({
+                    'date_of_birth': _('Пользователь должен быть старше 14 лет.')
+                })
+        if not self.phone_number.isdigit() or len(self.phone_number) != 11:
+            raise ValidationError({
+                'phone_number': _('Номер телефона должен содержать 11 цифр.')
+            })
+        if not self.passport.isdigit() or len(self.passport) != 10:
+            raise ValidationError({
+                'passport': _('Паспорт должен содержать 10 цифр.')
+            })
 
 class CargoCategory(models.Model):
     name = models.CharField(max_length=200, verbose_name='Наименование')
@@ -103,8 +122,7 @@ class Car(models.Model):
                                   limit_choices_to={'role': "Водитель"},
                                   on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Водитель')
     def __str__(self):
-        return ("Гос.номер :  " + str(self.state_number) + " Марка: " + str(self.stamp)
-                + " Модель: " + str(self.model) + " Статус: " + str(self.status))
+        return str(self.state_number)
 
     class Meta:
         verbose_name = "Машину"
@@ -175,15 +193,6 @@ class Package(models.Model):
     length = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Длина(м)')
     height = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Высота(м)')
     width = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Ширина(м)')
-    # employee_id = models.ForeignKey(
-    #     settings.AUTH_USER_MODEL,
-    #     on_delete=models.SET_NULL,
-    #     related_name='Packages_as_employee',
-    #     verbose_name='Сотрудник',
-    #     # limit_choices_to={'Role__name': "Сотрудник"},
-    #     null=True,
-    #     blank=True
-    # )
     cost = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Стоимость доставки')
     cargo_category = models.ForeignKey('CargoCategory', on_delete=models.SET_NULL, null=True,
                                          verbose_name='Категория груза')
@@ -201,11 +210,18 @@ class Package(models.Model):
 
 
     def clean(self):
+        super().clean()
+
         if self.sending_address == self.delivery_address:
             raise ValidationError(_('Адрес доставки и адрес отправки не может совпадать'))
 
 
+        if self.date_of_receipt and self.date_of_receipt < date.today():
+            raise ValidationError({'date_of_receipt': _('Дата отправки не может быть раньше текущей даты.')})
+
     def __str__(self):
         return (" Номер посылки: " + str(self.id) + " стоимость: " + str(self.cost) + " cтатус: " + str(self.status)
                 + " комментарий: " + str(self.comments))
+
+
 
