@@ -59,13 +59,13 @@ var cargoCategoryDropdown = document.getElementById("id_cargo_category");
     } else {
       var selectedOption = cargoCategoryDropdown.options[cargoCategoryDropdown.selectedIndex];
         var optionText = selectedOption.text;
-        var coefficientIndex = optionText.indexOf("коэф:") + 5; // 5 is the length of "коэф:"
+        var coefficientIndex = optionText.indexOf("коэфициент:") + 11; // 5 is the length of "коэф:"
         var coefficientString = optionText.substring(coefficientIndex).trim();
         var cargoCoefficient = parseFloat(coefficientString);
 
       console.log("Selected Option: " + selectedOption);
       console.log("Height: " + cargoCoefficient);
-      var cost = weight * width * length * height * 50 * cargoCoefficient;
+      var cost = weight * width * length * height * 765.4 * cargoCoefficient;
       document.getElementById("id_cost").value = Math.ceil(cost);
     }
   });

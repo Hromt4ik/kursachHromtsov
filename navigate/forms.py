@@ -40,6 +40,7 @@ class PakagesForm(forms.ModelForm):
             'date_of_receipt' : forms.DateTimeInput(attrs={'type': 'date', 'required': 'required'},
                                                          format='%Y-%m-%d'),
             'comments' : forms.TextInput(attrs={'placeholder': 'Описание посылки'}),
+            'status' : forms.TextInput(attrs={'readonly': 'readonly'}),
         }
 
 class PakagesEmployeeForm(forms.ModelForm):

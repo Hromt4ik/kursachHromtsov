@@ -21,8 +21,38 @@
           </div>
           <div class="results">
               {% if package %}
-            <p>Номер посылки: {{ package.id }}</p>
-            <p>Статус: {{ package.status }}</p>
+              <h2>Посылка Найдена</h2>
+             <div class="finde-pakage">
+                 <div class="str-find">
+                     <h3>Номер посылки</h3>
+                     <p>{{ package.id }}</p>
+                 </div>
+                 <div class="str-find">
+                     <h3>Статус</h3>
+                     <p>{{ package.status }}</p>
+                 </div>
+                 <div class="str-find">
+                     <h3>Адрес отправки</h3>
+                     <p>{{ package.sending_address }}</p>
+                 </div>
+                 <div class="str-find">
+                     <h3>Адрес доставки</h3>
+                     <p>{{ package.delivery_address }}</p>
+                 </div>
+                 <div class="str-find">
+                     <h3>Вес(кг)</h3>
+                     <p>{{ package.weight }}</p>
+                 </div>
+                 <div class="str-find">
+                     <h3>Дата отправкии</h3>
+                     <p>{{ package.date_of_receipt }}</p>
+                 </div>
+                 <div class="str-find">
+                     <h3>Дата доставки в пункт выдачи</h3>
+                     <p>{{ package.delivery_date }}</p>
+                 </div>
+
+             </div>
             {% else %}
                 <img class="boxquestion" src="{% static "image/boxquestion.png" %}" alt="кубик">
             {% endif %}</div>
@@ -34,18 +64,5 @@
       </div>
   </div>
 </main>
-<!--<script>-->
-<!--document.querySelector('.check-bottom').addEventListener('click', function(e) {-->
-<!--    e.preventDefault();-->
-<!--    var packageId = document.querySelector('.check').value;-->
-<!--    fetch(/path-to-your-view/?id=${packageId})-->
-<!--        .then(response => response.json())-->
-<!--        .then(data => {-->
-<!--             let content =-->
-<!--        <p>Вес: ${data.weight}</p>;-->
-<!--            document.querySelector('.results').innerHTML = data.message;-->
-<!--        })-->
-<!--        .catch(error => console.log(error));-->
-<!--});-->
-<!--</script>-->
+
 {% endblock %}

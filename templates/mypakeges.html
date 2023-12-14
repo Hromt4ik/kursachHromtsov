@@ -13,17 +13,12 @@
         <thead >
         <tr class="tr-1">
             <th>Номер</th>
-            <th>Клиент</th>
             <th>Комментарии</th>
             <th>Адрес отправки</th>
             <th>Адрес доставки</th>
             <th>Вес (кг)</th>
             <th>Дата отправки</th>
-            <th>Дата доставки в пункт выдачи</th>
             <th>Дата выдачи</th>
-            <th>Длина (м)</th>
-            <th>Высота (м)</th>
-            <th>Ширина (м)</th>
             <th>Стоимость доставки</th>
             <th>Категория груза</th>
             <th>Статус</th>
@@ -33,23 +28,16 @@
         {% for p in packages %}
         <tr class="tr-1">
             <td>{{ p.id }}</td>
-            <td>{{ p.client_id }}</td>
             <td>{{ p.comments }}</td>
             <td>{{ p.sending_address }}</td>
             <td>{{ p.delivery_address }}</td>
             <td>{{ p.weight }}</td>
             <td>{{ p.date_of_receipt }}</td>
-            <td>{{ p.delivery_date }}</td>
             <td>{{ p.date_of_issue }}</td>
-            <td>{{ p.length }}</td>
-            <td>{{ p.height }}</td>
-            <td>{{ p.width }}</td>
             <td>{{ p.cost }}</td>
             <td>{{ p.cargo_category }}</td>
             <td>{{ p.status }}</td>
         </tr>
-        {% empty %}
-        <p>Нет посылок.</p>
         {% endfor %}
         </tbody>
     </table>

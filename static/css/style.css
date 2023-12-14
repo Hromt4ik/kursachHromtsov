@@ -1,13 +1,6 @@
 
 /* Reset and base styles  */
-* {
-    color: black;
-	padding: 0px;
-	margin: 0px;
-	border: none;
-    font-size: 20px;
-    font-family: Arial, Helvetica, sans-serif;
-}
+
 
 *,
 *::before,
@@ -187,7 +180,7 @@ h1{
 	padding: 0px;
 	margin: 0px;
 	border: none;
-    font-size: 20px;
+    font-size: 26px;
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -637,7 +630,7 @@ flex-direction: column;
 }
 .wrapper-div > h3{
 border-bottom: 5px solid #006382;
-font-size: 16px;
+font-size: 20px;
 margin-bottom: 5px;
 text-align: start;
 }
@@ -816,7 +809,32 @@ th{
     border: 3px solid #006382;
 }
 
+.finde-pakage{
+display:flex;
+flex-wrap: wrap;
+justify-content: space-around;
+align-item:
+    padding : 20px;
+    margin-bottom: 50px;
+}
+
+.str-find{
+    min-width : 45%;
+    max-width : 45%;
+}
+
+.str-find > h3{
+border-bottom: 3px solid #006382;
+font-weight: 700;
+}
+
+.str-find > p{
+    margin: 20px 0;
+
+}
+
+
 table{
-margin-top: 50px;
- border-collapse: collapse;
+    margin-top: 50px;
+    border-collapse: collapse;
 }

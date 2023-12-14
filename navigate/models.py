@@ -61,7 +61,7 @@ class CargoCategory(models.Model):
     comments = models.CharField(max_length=500, verbose_name='Комментарии', null=True, blank=True)
 
     def __str__(self):
-        return f"{self.name} ({self.comments})  коэф:{self.coefficient}"
+        return f"{self.name} ({self.comments})  коэфициент:{self.coefficient}"
 
     class Meta:
         verbose_name = "Категорию"
@@ -100,7 +100,7 @@ class Car(models.Model):
                               default='На базе',
                               verbose_name='Статус')
     driver_id = models.ForeignKey(settings.AUTH_USER_MODEL,
-                                  #limit_choices_to={'post__name': "Сотрудник"},
+                                  limit_choices_to={'role': "Водитель"},
                                   on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Водитель')
     def __str__(self):
         return ("Гос.номер :  " + str(self.state_number) + " Марка: " + str(self.stamp)
@@ -151,7 +151,7 @@ class Package(models.Model):
         on_delete=models.SET_NULL,
         related_name='Packages_as_client',
         verbose_name='Клиент',
-        # limit_choices_to={'Role__name': "Клиент"},
+        limit_choices_to={'role': "Клиент"},
         null=True,
     )
     comments = models.CharField(max_length=500, verbose_name='Комментарии', null=True, blank=True)
