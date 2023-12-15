@@ -119,18 +119,22 @@ def package_detail(request):
 
     return JsonResponse({'message': 'Введите ID посылки'})
 
+
 @login_required
 def package_create_view(request):
-    if request.method == 'POST':
-        form = PakagesForm(request.POST)
-        if form.is_valid():
-            package = form.save(commit=False)
-            package.client_id = request.user
-            package.save()
-            return redirect('mypakeges')
+    if request.user.is_authenticated and not request.user.is_anonymous:
+        if request.method == 'POST':
+            form = PakagesForm(request.POST)
+            if form.is_valid():
+                package = form.save(commit=False)
+                package.client_id = request.user
+                package.save()
+                return redirect('mypakeges')
+        else:
+            form = PakagesForm()
+        return render(request, 'package_create.html', {'form': form})
     else:
-        form = PakagesForm()
-    return render(request, 'package_create.html', {'form': form})
+        return redirect('login')
 
 def package_create_employeer_view(request):
     if request.method == 'POST':

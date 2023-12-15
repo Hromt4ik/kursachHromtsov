@@ -46,17 +46,34 @@
             <td>{{ p.delivery_address }}</td>
             <td>{{ p.weight }}</td>
             <td>{{ p.date_of_receipt }}</td>
+
+            {% if not p.delivery_date %}
+            <td>-</td>
+        {% else %}
             <td>{{ p.delivery_date }}</td>
+            {% endif %}
+
+            {% if not p.date_of_issue %}
+            <td>-</td>
+            {% else %}
             <td>{{ p.date_of_issue }}</td>
+               {% endif %}
             <td>{{ p.length }}</td>
             <td>{{ p.height }}</td>
             <td>{{ p.width }}</td>
             <td>{{ p.cost }}</td>
             <td>{{ p.cargo_category }}</td>
             <td>{{ p.status }}</td>
+            {% if not p.car_id %}
+            <td>-</td>
+            {% else %}
             <td>{{ p.car_id }}</td>
+            {% endif %}
             <td>
+                <div>
+                    <a href="{% url 'edit_package' package_id=p.id %}" class="edit-link">Подробнее</a>
                 <a href="{% url 'edit_package' package_id=p.id %}" class="edit-link">Редактировать</a>
+                </div>
             </td>
         </tr>
             {% endfor %}

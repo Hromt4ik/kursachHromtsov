@@ -7,9 +7,8 @@
     <h2 style="text-align: center; margin-bottom: 20px;">Мои посылки</h2>
 
 
-
-            <div class="scroll-1">
-     <table>
+        <div class="scroll-1">
+     <table class="table">
         <thead >
         <tr class="tr-1">
             <th>Номер</th>
@@ -29,7 +28,11 @@
             <td>{{ p.delivery_address }}</td>
             <td>{{ p.weight }}</td>
             <td>{{ p.date_of_receipt }}</td>
+            {% if not p.date_of_issue %}
+            <td>-</td>
+            {% else %}
             <td>{{ p.date_of_issue }}</td>
+               {% endif %}
             <td>{{ p.cost }}</td>
             <td>{{ p.status }}</td>
             <td> <a href="{% url 'edit_package' package_id=p.id %}" class="edit-link">Подробнее</a></td>

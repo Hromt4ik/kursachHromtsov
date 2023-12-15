@@ -128,6 +128,12 @@ class Car(models.Model):
         verbose_name = "Машину"
         verbose_name_plural = "Машины"
 
+    def clean(self):
+        if not self.vin.isdigit() or len(self.vin) != 17:
+            raise ValidationError({
+                'vin': _('VIN номер должен содержать 17 символов.')
+            })
+
 class PointIssue(models.Model):
     region = models.CharField(max_length=200, verbose_name='Регион')
     city = models.CharField(max_length=200, verbose_name='Город')
@@ -205,7 +211,6 @@ class Package(models.Model):
 
     class Meta:
         verbose_name = "Посылку"
-        verbose_name = "Посылку"
         verbose_name_plural = "Посылки"
 
 
@@ -218,6 +223,15 @@ class Package(models.Model):
 
         if self.date_of_receipt and self.date_of_receipt < date.today():
             raise ValidationError({'date_of_receipt': _('Дата отправки не может быть раньше текущей даты.')})
+
+        if self.delivery_date and self.date_of_receipt and self.delivery_date < self.date_of_receipt:
+            raise ValidationError({'delivery_date': _('Дата доставки не может быть меньше даты отправки.')})
+
+        if self.delivery_date and self.date_of_issue and self.delivery_date > self.date_of_issue:
+            raise ValidationError({'date_of_issue': _('Дата выдачи не может быть раньше даты доставки.')})
+
+
+
 
     def __str__(self):
         return (" Номер посылки: " + str(self.id) + " стоимость: " + str(self.cost) + " cтатус: " + str(self.status)
