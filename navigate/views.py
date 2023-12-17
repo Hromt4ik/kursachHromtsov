@@ -208,3 +208,4 @@ def edit_package(request, package_id):
         form = PackageEditForm(instance=package)
 
     return render(request, 'edit_package.html', {'form': form})
+

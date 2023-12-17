@@ -594,7 +594,7 @@ box-shadow: 0px 5px 50px -1px rgba(0, 99, 130, 0.8);
 }
 
 .forgot-pass{
-    color: black;
+    color: #006382;
 }
 
 .after-change{
@@ -749,4 +749,12 @@ body::-webkit-scrollbar-thumb {
 body::-webkit-scrollbar-button {
   background-color: #006382;
   border-radius: 10px;
+}
+
+#accsess{
+
+    margin: 0 auto;
+    text-align: center;
+
+
 }

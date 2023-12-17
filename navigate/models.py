@@ -39,7 +39,7 @@ class CustomUser(AbstractUser):
                               verbose_name='Роль')
     def __str__(self):
         if(self.role == 'Клиент'):
-            return "Логин:  " + self.username + " Роль: " + str(self.role)  + " Паспорт: " + str(self.passport)
+            return "Имя:  " + self.first_name + " Фамилия: " + str(self.last_name)  + " Паспорт: " + str(self.passport)
         else:
             return "Логин:  " + self.username + " Роль: " + str(self.role)
     class Meta:

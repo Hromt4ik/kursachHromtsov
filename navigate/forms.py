@@ -81,8 +81,8 @@ class PakagesEmployeerForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'default': 'Принят от клиента'}))
     class Meta:
         model = Package
-        fields = [ 'sending_address', 'delivery_address', 'weight', 'length', 'height','date_of_receipt',
-                  'width', 'comments', 'cargo_category', 'cost', 'status']
+        fields = [ 'sending_address', 'delivery_address', 'weight', 'length', 'height', 'width', 'date_of_receipt',
+                   'comments', 'cargo_category', 'cost', 'status']
         widgets = {
             'date_of_receipt' : forms.DateTimeInput(attrs={'type': 'date', 'required': 'required'},
                                                          format='%Y-%m-%d'),
