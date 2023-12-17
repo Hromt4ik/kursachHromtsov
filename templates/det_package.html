@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main>
+    <div class="container">
+        <h1>Детали посылки</h1>
+        <dl class="dl-horizontal">
+            <dt>Номер посылки:</dt>
+            <dd>{{ package.id }}</dd>
+            <dt>Клиент:</dt>
+            <dd>{{ package.client_id }}</dd>
+            <dt>Комментарии:</dt>
+            {%if package.comments %}
+            <dd>{{ package.comments }}</dd>
+            {% else %}
+            <dd>-</dd>
+            {% endif%}
+            <dt>Адрес отправки:</dt>
+            <dd>{{ package.sending_address }}</dd>
+            <dt>Адрес доставки:</dt>
+            <dd>{{ package.delivery_address }}</dd>
+            <dt>Вес (кг):</dt>
+            <dd>{{ package.weight }}</dd>
+            <dt>Дата отправки:</dt>
+            <dd>{{ package.date_of_receipt }}</dd>
+            <dt>Дата доставки в пункт выдачи:</dt>
+            {%if package.delivery_date %}
+            <dd>{{ package.delivery_date }}</dd>
+            {% else %}
+            <dd>-</dd>
+            {% endif%}
+            <dt>Дата выдачи:</dt>
+            {%if package.date_of_issue %}
+            <dd>{{ package.date_of_issue }}</dd>
+            {% else %}
+            <dd>-</dd>
+            {% endif%}
+            <dt>Длина (м):</dt>
+            <dd>{{ package.length }}</dd>
+            <dt>Высота (м):</dt>
+            <dd>{{ package.height }}</dd>
+            <dt>Ширина (м):</dt>
+            <dd>{{ package.width }}</dd>
+            <dt>Стоимость доставки:</dt>
+            <dd>{{ package.cost }}</dd>
+            <dt>Категория груза:</dt>
+            <dd>{{ package.cargo_category }}</dd>
+            <dt>Статус:</dt>
+            <dd>{{ package.get_status_display }}</dd>
+
+        </dl>
+
+    </div>
+</main>
+{% endblock %}

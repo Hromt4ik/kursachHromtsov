@@ -41,7 +41,11 @@
         <tr class="tr-1">
             <td>{{ p.id }}</td>
             <td>{{ p.client_id }}</td>
+            {% if p.comments %}
             <td>{{ p.comments }}</td>
+            {% else %}
+            <td>-</td>
+            {% endif %}
             <td>{{ p.sending_address }}</td>
             <td>{{ p.delivery_address }}</td>
             <td>{{ p.weight }}</td>
@@ -71,7 +75,7 @@
             {% endif %}
             <td>
                 <div>
-                    <a href="{% url 'edit_package' package_id=p.id %}" class="edit-link">Подробнее</a>
+                    <a href="{% url 'package_detail' id=p.id %}" class="edit-link">Подробнее</a>
                 <a href="{% url 'edit_package' package_id=p.id %}" class="edit-link">Редактировать</a>
                 </div>
             </td>

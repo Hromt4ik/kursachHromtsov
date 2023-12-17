@@ -39,7 +39,7 @@ class CustomUser(AbstractUser):
                               verbose_name='Роль')
     def __str__(self):
         if(self.role == 'Клиент'):
-            return "Имя:  " + self.first_name + " Фамилия: " + str(self.last_name)  + " Паспорт: " + str(self.passport)
+            return "ФИО: " + str(self.last_name) + " " + self.first_name + " " +  self.patronymic + " " + " Паспорт: " + str(self.passport)
         else:
             return "Логин:  " + self.username + " Роль: " + str(self.role)
     class Meta:
@@ -129,9 +129,14 @@ class Car(models.Model):
         verbose_name_plural = "Машины"
 
     def clean(self):
-        if not self.vin.isdigit() or len(self.vin) != 17:
+        if  len(self.vin) != 17:
             raise ValidationError({
                 'vin': _('VIN номер должен содержать 17 символов.')
+            })
+
+        if len(self.vin) < 8 :
+            raise ValidationError({
+                'state_number': _('гос. номер должен состоять из 8 или 9 символдов')
             })
 
 class PointIssue(models.Model):
@@ -234,8 +239,9 @@ class Package(models.Model):
 
 
     def __str__(self):
-        return (" Номер посылки: " + str(self.id) + " стоимость: " + str(self.cost) + " cтатус: " + str(self.status)
-                + " комментарий: " + str(self.comments))
-
+        if self.comments:
+            return " Номер посылки: " + str(self.id) + " Стоимость: " + str(self.cost) + " Статус: " + str(self.status) + " Комментарий: " + str(self.comments)
+        else:
+            return " Номер посылки: " + str(self.id) + " Стоимость: " + str(self.cost) + " Статус: " + str(self.status)
 
 

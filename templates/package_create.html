@@ -63,12 +63,15 @@ var cargoCategoryDropdown = document.getElementById("id_cargo_category");
         var coefficientString = optionText.substring(coefficientIndex).trim();
         var cargoCoefficient = parseFloat(coefficientString);
 
-      console.log("Selected Option: " + selectedOption);
-      console.log("Height: " + cargoCoefficient);
-      var cost = weight * width * length * height * 250 * cargoCoefficient;
-      document.getElementById("id_cost").value = Math.ceil(cost);
+        if (isNaN(cargoCoefficient)) {
+              alert("Пожалуйста, введите действительные числовые значения для веса и размера посылки.");
+            } else {
+
+                  var cost = weight * width * length * height * 250 * cargoCoefficient;
+                  document.getElementById("id_cost").value = Math.ceil(cost);
+                  }
     }
-  });
 });
+    });
 </script>
 {% endblock %}

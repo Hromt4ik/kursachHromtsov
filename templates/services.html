@@ -63,6 +63,20 @@
             {% endif %}</div>
 
       </div>
+
+
+<!--<div class="serv">-->
+<!--    <h3>Пункты выдачи</h3> -->
+<!--    <label for="id_city">Выберите город:</label>-->
+<!--    <select id="id_city" name="city">-->
+<!--        {% for city_info in cities %}-->
+<!--            <option value="{{ city_info.city }}">{{ city_info.city }}</option>-->
+<!--        {% endfor %}-->
+<!--    </select>-->
+<!--    <div id="selected_info">-->
+<!--    &lt;!&ndash; The list of delivery points will be displayed here &ndash;&gt;-->
+<!--</div>-->
+<!--</div>-->
       <div class="serv">
           <h3>Расчитать стоимость и создать заявку на перевозку</h3>
           {% if user.is_authenticated %}
@@ -75,5 +89,47 @@
       </div>
   </div>
 </main>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function(){
+        // Handle city selection change
+        $('#id_city').on('change', function(){
+            var selectedCity = $(this).val();
+
+            console.log('Selected city:', selectedCity);
+
+            // Make AJAX request to get delivery points
+            $.ajax({
+                url: '{% url "get_delivery_points" %}',
+                data: {'city': selectedCity},
+                dataType: 'json',
+
+                success: function(data){
+                    console.log('AJAX success:', data);
+
+                    var selectedInfoDiv = $('#selected_info');
+                    selectedInfoDiv.empty();
+
+                    var ul = $('<ul>');
+
+                    $.each(data, function(index, point){
+                        var liText = point.region + ', г.' + point.city + ', ул.' + point.street + ', д.' + point.home;
+                        if (point.corpus) {
+                            liText += ', к.' + point.corpus;
+                        }
+
+                        var li = $('<li>').text(liText);
+                        ul.append(li);
+                    });
+
+                    selectedInfoDiv.append(ul);
+                },
+                error: function(xhr, status, error){
+                    console.error('AJAX Error:', status, error);
+                }
+            });
+        });
+    });
+</script>
 
 {% endblock %}

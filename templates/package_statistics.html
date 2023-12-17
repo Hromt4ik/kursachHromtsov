@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main>
+  <div class="container">
+    <h1>Статистика посылок</h1>
+
+    <form method="get" class="form-statics">
+      {{ form.as_p }}
+      <button class="static-button" type="submit">Показать статистику</button>
+    </form>
+
+    <h2>Статистика по адресам доставки:</h2>
+    <ul>
+      {% for stat in delivery_address_stats %}
+        <li>Адрес: {{ stat.delivery_address__region }}, г. {{ stat.delivery_address__city }}, ул. {{ stat.delivery_address__street }}, д. {{ stat.delivery_address__home }},{% if stat.delivery_address__corpus %} к.{{ stat.delivery_address__corpus }}, {%endif%} Количество посылок: {{ stat.count }}</li>
+      {% endfor %}
+    </ul>
+
+    <h2>Статистика по адресам отправки:</h2>
+    <ul>
+      {% for stat in sending_address_stats %}
+        <li>Адрес: {{ stat.sending_address__region }}, г. {{ stat.sending_address__city }}, ул. {{ stat.sending_address__street }}, д. {{ stat.sending_address__home }}, {% if stat.delivery_address__corpus %} к.{{ stat.delivery_address__corpus }}, {%endif%} Количество посылок: {{ stat.count }}</li>
+
+      {% endfor %}
+    </ul>
+
+    <h2>Статистика по клиентам:</h2>
+    <ul>
+      {% for stat in client_stats %}
+        <li>Клиент: {{ stat.client_id__first_name }} {{ stat.client_id__last_name }} {{ stat.client_id__patronymic }}, {{ stat.client_id__date_of_birth }}, Количество посылок: {{ stat.count }}</li>
+      {% endfor %}
+    </ul>
+
+     <h2>Статистика по машинам:</h2>
+    <ul>
+      {% for stat in car_stats %}
+      {% if stat.car_id__state_number %}
+        <li>Модель машины: {{ stat.car_id__model }}, Номер: {{ stat.car_id__state_number }}, Количество перевезенных посылок: {{ stat.count }}</li>
+      {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+  </main>
+{% endblock %}

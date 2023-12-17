@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import CustomUser, Package, PointIssue, CargoCategory
 from  django.shortcuts import render
-
+from django.forms.widgets import SelectDateWidget
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
@@ -145,3 +145,7 @@ class PackageFilterForm(forms.Form):
         label = 'Клиент'
     )
     package_id = forms.IntegerField(label='Номер  посылки', required=False)
+
+class DateRangeForm(forms.Form):
+    start_date = forms.DateField(label='Начальная дата', widget=SelectDateWidget())
+    end_date = forms.DateField(label='Конечная дата', widget=SelectDateWidget())

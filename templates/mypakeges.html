@@ -35,7 +35,7 @@
                {% endif %}
             <td>{{ p.cost }}</td>
             <td>{{ p.status }}</td>
-            <td> <a href="{% url 'edit_package' package_id=p.id %}" class="edit-link">Подробнее</a></td>
+            <td> <a href="{% url 'package_detail' id=p.id %}" class="edit-link">Подробнее</a></td>
         </tr>
         {% endfor %}
         </tbody>

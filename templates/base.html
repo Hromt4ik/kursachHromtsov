@@ -28,6 +28,7 @@
                 {% elif user.role == 'Сотрудник' or user.role == 'Администратор' %}
                 <li class="nav-list-item"><a href="{%url 'employeerpakages'%}" style="color: #FFFFFF">Посылки</a></li>
                 <li class="nav-list-item"><a href="{%url 'createPakagesEmployeer'%}" style="color: #FFFFFF">Создать Посылку</a></li>
+                <li class="nav-list-item"><a href="{%url 'package_statistics'%}" style="color: #FFFFFF">Статистика</a></li>
                 {% endif %}
             </ul>
             <div class="signin">
@@ -68,6 +69,7 @@
                 {% elif user.role == 'Сотрудник' or user.role == 'Администратор' %}
                 <li class="nav-list-item"><a href="{%url 'employeerpakages'%}" style="color: #FFFFFF">Посылки</a></li>
                 <li class="nav-list-item"><a href="{%url 'createPakagesEmployeer'%}" style="color: #FFFFFF">Создать Посылку</a></li>
+                 <li class="nav-list-item"><a href="{%url 'package_statistics'%}" style="color: #FFFFFF">Статистика</a></li>
                 {% endif %}
             </ul>
             <p class="copiright">&copy; "Быстрее света" 2023</p>

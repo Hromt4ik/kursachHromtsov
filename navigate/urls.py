@@ -13,4 +13,7 @@ urlpatterns = [
     path('createPakagesEmployeer/', views.package_create_employeer_view, name='createPakagesEmployeer'),
     path('employeerpakages/', views.EmployeerPakegesPageView.as_view(), name='employeerpakages'),
     path('employeerpakages/edit/<int:package_id>/', views.edit_package, name='edit_package'),
+    path('navigate/package/<int:id>/', views.package_detail, name='package_detail'),
+    path('package_statistics/', views.PackageStatisticsView.as_view(), name='package_statistics'),
+    path('get_delivery_points/', views.DeliveryPointsView.as_view(), name='get_delivery_points'),
 ]

@@ -121,7 +121,7 @@ header{
 
 .nav-list-item{
     margin-top: 10px;
-    margin-left: 25px;
+    margin-left: 5px;
     color: white;
 }
 
@@ -214,7 +214,7 @@ h2{
 .form-sign > p > label, .filter-form > p > label, .form-reset-pass > p > label,
 .form-change-pass > p > label, .form-login > p > label,
 .create-pakeges > p > label, .form-user-edit > p > label,
-.form-edit-pakage  .mb > label {
+.form-edit-pakage  .mb > label{
     display: flex;
     text-align: center;
     justify-content: start;
@@ -234,6 +234,32 @@ h2{
     width: 100%;
 }
 
+
+.form-statics{
+
+}
+
+.form-statics > p {
+
+    display: flex;
+    flex-wrap: wrap;
+ justify-content: space-between;
+
+}
+
+.form-statics > p > label{
+width: 100%
+}
+
+.form-statics > p > select
+
+{
+    border: 1px solid #006382;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 20px;
+    width: 32%;
+}
 
 
 .helptext{
@@ -298,8 +324,7 @@ text-align: center;
     padding: 10px;
     font-size: 20px;
 
-    min-width: 750px;
-    width: 100%;
+    min-width: 100px;
     margin-left: 20px;
 
 }
@@ -508,13 +533,25 @@ text-align: start;
 }
 
 .create-pakeges, .form-sign ,.form-reset-pass, .form-login , .form-user-edit, .form-change-pass,
-.form-edit-pakage{
+.form-edit-pakage, .form-statics{
     border: 3px solid #006382;
     border-radius: 10px;
     padding: 20px;
 }
 
 .create-button{
+    color: white;
+    background-color: #006382;
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 10px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.static-button{
     color: white;
     background-color: #006382;
     padding: 10px;
@@ -539,7 +576,7 @@ text-align: start;
     justify-content: center;
 }
 
-.create-button:hover, .create-button-2:hover{
+.create-button:hover, .create-button-2:hover, .static-button:hover{
 	background: rgba(0,0,0,0);
 	color: #006382;
 	box-shadow: inset 0 0 0 3px #006382;
@@ -556,7 +593,8 @@ text-align: start;
 .form-sign > p > input:focus, .form-reset-pass > p > input:focus, .form-login > p > input:focus, .create-pakeges > p > input:focus,
  .create-pakeges > p > select:focus, .form-user-edit > p > input:focus,
  .form-change-pass > p > input:focus, .filter-form > p > select:focus,
-.form-edit-pakage  .mb > input:focus, .form-edit-pakage  .mb > select:focus{
+.form-edit-pakage  .mb > input:focus, .form-edit-pakage  .mb > select:focus,
+.form-statics > p > select:focus {
 
 -webkit-box-shadow: 0px 5px 50px -1px rgba(0, 99, 130, 0.8);
 -moz-box-shadow: 0px 5px 50px -1px rgba(0, 99, 130, 0.8);

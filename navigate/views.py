@@ -14,8 +14,52 @@ from django.contrib.auth.hashers import make_password
 from django.shortcuts import render
 from django import forms
 from django.contrib.auth.decorators import login_required
-from .forms import CustomUserCreationForm, CustomUserChangeForm,PackageFilterForm, PakagesForm, ChangeUserForm, PakagesEmployeeForm, PackageEditForm
+from .forms import CustomUserCreationForm, CustomUserChangeForm,PackageFilterForm, DateRangeForm, PakagesForm, ChangeUserForm, PakagesEmployeeForm, PackageEditForm
 # Create your views here.
+from django.views import View
+from django.utils.decorators import method_decorator
+from datetime import datetime, timedelta
+from django.db.models import Count
+@method_decorator(login_required, name='dispatch')
+class PackageStatisticsView(View):
+    template_name = 'package_statistics.html'
+
+    def get(self, request, *args, **kwargs):
+        form = DateRangeForm(request.GET or None)
+
+        if form.is_valid():
+            start_date = form.cleaned_data['start_date']
+            end_date = form.cleaned_data['end_date']
+        else:
+            today = datetime.today()
+            end_date = today
+            start_date = today - timedelta(days=30)
+
+        delivery_address_stats = Package.objects.filter(
+            date_of_receipt__range=[start_date, end_date]
+        ).values('delivery_address__region', 'delivery_address__city', 'delivery_address__street', 'delivery_address__city', 'delivery_address__home', 'delivery_address__corpus').annotate(count=Count('id')).order_by('-count')
+
+        sending_address_stats = Package.objects.filter(
+            date_of_receipt__range=[start_date, end_date]
+        ).values('sending_address__region', 'sending_address__city', 'sending_address__street', 'sending_address__city', 'sending_address__home', 'sending_address__corpus').annotate(count=Count('id')).order_by('-count')
+
+        client_stats = Package.objects.filter(
+            date_of_receipt__range=[start_date, end_date]
+        ).values('client_id__first_name', 'client_id__last_name', 'client_id__patronymic', 'client_id__date_of_birth').annotate(count=Count('id')).order_by('-count')
+
+        car_stats = Package.objects.filter(
+            date_of_receipt__range=[start_date, end_date]
+        ).values('car_id__model', 'car_id__state_number').annotate(count=Count('id')).order_by('-count')
+
+        context = {
+            'form': form,
+            'delivery_address_stats': delivery_address_stats,
+            'sending_address_stats': sending_address_stats,
+            'client_stats': client_stats,
+            'car_stats': car_stats,
+        }
+
+        return render(request, self.template_name, context)
 
 class HomePageView(TemplateView):
     template_name = 'home.html'
@@ -23,12 +67,19 @@ class HomePageView(TemplateView):
 class ContactPageView(TemplateView):
         template_name = 'contact.html'
 
+def get_pickup_points(request):
+    city = request.GET.get('city', '')
+    points = PointIssue.objects.filter(city=city).values('id', 'name')
+    return JsonResponse(list(points), safe=False)
+
 
 class ServicesPageView(TemplateView):
     template_name = 'services.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        cities = PointIssue.objects.values('city').annotate(count=Count('city')).order_by('city')
+        context['cities'] = cities
         tracking_number = self.request.GET.get('tracking_number', '')
 
         if tracking_number:
@@ -106,18 +157,13 @@ class SignUp(CreateView):
     success_url = reverse_lazy('login')
     template_name = 'signup.html'
 
-def package_detail(request):
-    package_id = request.GET.get('id')
+def package_detail(request, id):
+    package_id = id
+    package = get_object_or_404(Package, pk=package_id)
+    return render(request, 'det_package.html', {
+        'package': package,
+    })
 
-    if package_id:
-        try:
-            package = get_object_or_404(Package, pk=package_id)
-            # Формируйте ответ в JSON-формате
-            return JsonResponse({'message': 'Информация о посылке: ...'})  # Здесь должны быть детали посылки
-        except ValueError:
-            return JsonResponse({'message': 'Неверный формат ID'})
-
-    return JsonResponse({'message': 'Введите ID посылки'})
 
 
 @login_required
@@ -142,7 +188,7 @@ def package_create_employeer_view(request):
         if form.is_valid():
 
             form.save()
-            return redirect('base')
+            return redirect('employeerpakages')
     else:
         form = PakagesEmployeeForm()
     return render(request, 'package_create_employeer.html', {'form': form})
@@ -209,3 +255,9 @@ def edit_package(request, package_id):
 
     return render(request, 'edit_package.html', {'form': form})
 
+
+class DeliveryPointsView(View):
+    def get(self, request, *args, **kwargs):
+        city = request.GET.get('city', '')
+        delivery_points = PointIssue.objects.filter(city=city).values('id', 'region', 'city', 'street', 'home', 'corpus')
+        return JsonResponse(list(delivery_points), safe=False)
